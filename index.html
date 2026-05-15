@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -9,6 +10,7 @@
 <meta name="theme-color" content="#7B3B10"/>
 <title>Veneta Fiocchi — Ordini</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -57,29 +59,25 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .field input::placeholder,.field textarea::placeholder{color:var(--hi)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g2-mobile{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:500px){.g2{grid-template-columns:1fr}.g2-mobile{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.g2{grid-template-columns:1fr}}
 
 /* INLINE ADD */
 .inline-add{display:flex;gap:8px;margin-top:5px}
 .inline-add input{flex:1;height:42px;padding:0 12px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--tx);font-size:16px;font-family:inherit}
 .mini-btn{height:42px;min-width:42px;padding:0 14px;border-radius:10px;border:1.5px solid var(--bor);background:#fff;color:var(--mu);font-size:15px;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .mini-btn.ok{background:var(--br);color:#fff;border-color:var(--br)}
-.mini-btn.no:hover,.mini-btn.no:active{color:#c0392b}
+.mini-btn.no:active{color:#c0392b}
 
 /* ROW CARD */
 .row-card{border:1.5px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;background:var(--bg)}
 .row-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .row-num{width:24px;height:24px;border-radius:50%;background:var(--orp);border:1.5px solid var(--orl);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--br)}
-.del-row{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--hi);font-size:20px;display:flex;align-items:center;padding:4px;-webkit-tap-highlight-color:rgba(192,57,43,.15)}
+.del-row{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--hi);font-size:20px;display:flex;align-items:center;padding:4px}
 .del-row:active{color:#c0392b}
-
-/* PRICE */
 .price-wrap{display:flex;gap:8px;align-items:flex-end}
 .price-wrap .field{flex:1}
 .last-btn{height:44px;padding:0 12px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--hi);font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:5px;margin-top:16px;flex-shrink:0}
 .last-btn.on{border-color:var(--or);color:var(--br);background:var(--orp)}
-
-/* BUTTONS */
 .add-row-btn{width:100%;height:46px;border:2px dashed var(--bor);border-radius:12px;background:none;color:var(--mu);font-size:14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-top:8px}
 .add-row-btn:active{border-color:var(--or);color:var(--br);background:var(--orp)}
 .confirm-btn{width:100%;height:50px;margin-top:14px;background:var(--br);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
@@ -94,7 +92,6 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .ord-client{font-size:14px;font-weight:800;color:var(--br);display:flex;align-items:center;gap:7px;flex:1;min-width:0}
 .ord-client-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ord-meta{font-size:11px;color:var(--mu);margin-top:2px}
-.ord-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .ord-del{background:none;border:none;cursor:pointer;color:var(--hi);font-size:18px;display:flex;align-items:center;padding:4px}
 .ord-del:active{color:#c0392b}
 .ord-row{padding:10px 14px;border-bottom:1px solid var(--bor);font-size:13px}
@@ -105,25 +102,32 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .pricetag{font-size:11px;font-weight:800;color:var(--br);background:var(--orp);border:1px solid var(--orl);border-radius:100px;padding:3px 10px;white-space:nowrap}
 .ord-note{margin-top:6px;font-size:11px;color:var(--mu);display:flex;align-items:flex-start;gap:5px;padding:6px 9px;background:var(--orp);border-radius:8px;border-left:3px solid var(--orl)}
 
-/* STATUS BADGES */
-.status-row{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg);border-top:1px solid var(--bor)}
-.s-pill{font-size:10px;font-weight:700;border-radius:100px;padding:3px 9px;display:inline-flex;align-items:center;gap:4px;border:1px solid;cursor:pointer;transition:all .15s;font-family:inherit}
-.s-pill.sent{background:#FEF3E2;color:#9A7355;border-color:#E8D5B8}
-.s-pill.sent.active{background:#fef9ee;color:#d4880f;border-color:#FAC85A}
-.s-pill.read{background:#eaf3de;color:#5f5e5a;border-color:#c4c4c4}
+/* STATUS */
+.status-row{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg);border-top:1px solid var(--bor);flex-wrap:wrap}
+.s-pill{font-size:10px;font-weight:700;border-radius:100px;padding:5px 11px;display:inline-flex;align-items:center;gap:4px;border:1.5px solid;cursor:pointer;transition:all .15s;font-family:inherit}
+.s-pill.sent{background:#fff;color:var(--mu);border-color:var(--bor)}
+.s-pill.sent.active{background:#fff8ec;color:#d4880f;border-color:var(--orl)}
+.s-pill.read{background:#fff;color:#aaa;border-color:#ddd}
 .s-pill.read.active{background:#eaf3de;color:#3b6d11;border-color:#97c459}
 
 /* EMPTY */
 .empty{text-align:center;padding:3rem 1rem;color:var(--hi);font-size:13px}
 .empty i{font-size:40px;display:block;margin-bottom:12px;color:var(--bor)}
 
-/* SEND */
+/* SEND SECTION */
 .send-section{margin-top:16px}
-.send-row{display:flex;gap:10px;align-items:flex-end}
-.send-row .field{flex:1}
-.send-btn{height:44px;padding:0 20px;background:var(--or);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:7px;margin-top:18px;white-space:nowrap;flex-shrink:0}
-.send-btn:active{background:#d4880f}
+.send-email-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.send-email-row .field{flex:1;min-width:200px}
+.send-btn{height:44px;padding:0 22px;background:var(--or);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:7px;margin-top:18px;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.send-btn:hover{background:#d4880f}
+.send-btn:disabled{opacity:.6;cursor:not-allowed}
 .hint{font-size:11px;color:var(--hi);margin-top:8px;display:flex;align-items:center;gap:4px}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#2d2d2d;color:#fff;padding:12px 22px;border-radius:100px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;display:flex;align-items:center;gap:8px;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{background:#3b6d11}
+.toast.error{background:#c0392b}
 
 /* ── AGENDA ── */
 .agenda-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap}
@@ -134,23 +138,17 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .mnav-btn:active{background:var(--orp)}
 .today-btn{height:38px;padding:0 16px;border:1.5px solid var(--bor);border-radius:10px;background:var(--sf);color:var(--mu);cursor:pointer;font-size:13px;font-weight:700;font-family:inherit}
 .today-btn:active{background:var(--orp);color:var(--br)}
-
-/* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
 @media(max-width:420px){.stats-row{grid-template-columns:1fr 1fr}}
 .stat-card{background:var(--sf);border:1.5px solid var(--bor);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 1px 3px rgba(123,59,16,.05)}
 .stat-val{font-size:24px;font-weight:800;color:var(--br)}
 .stat-lbl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
-
-/* WEEK */
 .week-block{margin-bottom:20px}
 .week-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
 .week-pill{background:var(--br);color:#fff;border-radius:100px;padding:5px 14px;font-size:11px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
 .week-dates{font-size:12px;color:var(--mu)}
 .week-count{font-size:11px;color:var(--or);font-weight:700;margin-left:auto;white-space:nowrap}
 .week-line{flex:1;height:1px;background:var(--bor);min-width:10px}
-
-/* AGENDA CARDS */
 .ag-card{background:var(--sf);border:1.5px solid var(--bor);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(123,59,16,.05)}
 .ag-card-hdr{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--orp);border-bottom:1px solid var(--bor)}
 .ag-date-badge{background:var(--br);color:#fff;border-radius:10px;padding:6px 11px;text-align:center;flex-shrink:0;min-width:48px}
@@ -164,15 +162,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .ag-prod{flex:1;font-weight:700;color:var(--tx);min-width:100px;font-size:13px}
 .ag-note{margin-top:6px;font-size:11px;color:var(--mu);display:flex;align-items:flex-start;gap:4px;padding:5px 8px;background:var(--orp);border-radius:6px;border-left:2.5px solid var(--orl);width:100%}
 .empty-week{padding:16px;text-align:center;font-size:12px;color:var(--hi);background:var(--sf);border:1.5px dashed var(--bor);border-radius:12px}
-
-/* STATUS PILLS */
 .sp-sent{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px;display:inline-flex;align-items:center;gap:3px;border:1px solid var(--orl);background:var(--orp);color:#d4880f}
 .sp-read{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px;display:inline-flex;align-items:center;gap:3px;border:1px solid #97c459;background:#eaf3de;color:#3b6d11}
-
-/* ERR */
 .err{border-color:#c0392b!important;box-shadow:0 0 0 3px rgba(192,57,43,.12)!important}
-
-/* SAFE AREA */
 @supports(padding-bottom:env(safe-area-inset-bottom)){
   .page{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
 }
@@ -180,6 +172,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 </head>
 <body>
 <div class="app">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <!-- HEADER -->
 <div class="hdr">
@@ -270,19 +265,22 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
   </div>
   <div id="ordersOut"><div class="empty"><i class="ti ti-inbox"></i>Nessun ordine inserito</div></div>
 
+  <!-- SEND -->
   <div class="card send-section" id="sendCard" style="display:none">
     <div class="step-hdr">
       <div class="step-dot"><i class="ti ti-send" style="font-size:12px"></i></div>
       <div class="step-lbl">Invia all'ufficio ordini</div>
     </div>
-    <div class="send-row">
+    <div class="send-email-row">
       <div class="field">
         <label>Email destinatario</label>
         <input type="email" id="emailDest" value="andrea.fantini@venetafiocchi.it"/>
       </div>
-      <button class="send-btn" onclick="sendAll()"><i class="ti ti-send" style="font-size:16px"></i> Invia</button>
+      <button class="send-btn" id="sendBtn" onclick="sendAll()">
+        <i class="ti ti-send" style="font-size:16px"></i> Invia ora
+      </button>
     </div>
-    <p class="hint"><i class="ti ti-info-circle" style="font-size:13px"></i> Si aprirà l'app Mail con gli ordini pronti da inviare</p>
+    <p class="hint"><i class="ti ti-shield-check" style="font-size:13px"></i> La mail viene inviata direttamente tramite EmailJS — nessuna app esterna</p>
   </div>
 </div>
 
@@ -307,6 +305,11 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 </div><!-- /app -->
 
 <script>
+/* ── EMAILJS INIT ── */
+emailjs.init('oo5yBjwrgq7kYiOTa');
+const EJS_SERVICE  = 'service_kku0qla';
+const EJS_TEMPLATE = 'template_vvmovxc';
+
 /* ── DATA ── */
 const PRODUCTS=['BOVIMIX 109 UNIFEED','BOVIMIX 111','BOVIMIX 112','FIBRA FLAKES 311 P','FIBRA FLAKES 314 P','FIBRA FLAKES 314 P FINISH','FIBRA FLAKES 314 PP','FIBRA FLAKES 314 PP FINISH','FIBRA FLAKES 315 PP','FIBRA FLAKES STARTER','FIOCCO DI LUPINO AUSTRALIANO','FP-NUCLEOVIT 28 CO','KÄLBERMÜSLI','MULTIPARTICLE STARTER','MULTIPARTICLE STARTER 20','NUCLEOFLAKES 27','NUCLEOVIT 50','VITELLI START 170'];
 let products=[...PRODUCTS];
@@ -321,6 +324,15 @@ function fd(d){if(!d)return'—';const[y,m,g]=d.split('-');return`${g}/${m}/${y}
 function isoDate(d){return d.toISOString().slice(0,10);}
 function circ(s){return`<svg width="${s}" height="${s}" viewBox="0 0 100 100" style="border-radius:50%;flex-shrink:0;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="#7B3B10"/><path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/><path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/><path d="M50,50 L50,90 A40,40 0 0,1 10,50 Z" fill="#F5A020" opacity=".7"/><path d="M50,50 L10,50 A40,40 0 0,1 50,10 Z" fill="#FAC85A" opacity=".5"/><line x1="50" y1="10" x2="50" y2="90" stroke="#7B3B10" stroke-width="3"/><line x1="10" y1="50" x2="90" y2="50" stroke="#7B3B10" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#7B3B10"/></svg>`;}
 
+/* ── TOAST ── */
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  t.innerHTML=(type==='success'?'<i class="ti ti-circle-check"></i>':'<i class="ti ti-circle-x"></i>')+' '+msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
 /* ── TABS ── */
 function switchTab(t){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -330,7 +342,7 @@ function switchTab(t){
   if(t==='agenda')renderAgenda();
 }
 
-/* ── PRODUCTS OPTIONS ── */
+/* ── PRODUCTS ── */
 function prodOpts(sel){
   return'<option value="">— scegli prodotto —</option>'+products.map(p=>`<option${p===sel?' selected':''}>${p}</option>`).join('')+'<option value="__new__">+ Nuovo prodotto...</option>';
 }
@@ -341,7 +353,7 @@ function renderRows(){
   document.getElementById('rowsList').innerHTML=rows.map((r,i)=>`
     <div class="row-card" id="rc-${r.id}">
       <div class="row-head"><div class="row-num">${i+1}</div><span style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px">Riga prodotto</span></div>
-      ${rows.length>1?`<button class="del-row" onclick="delRow(${r.id})" aria-label="Elimina"><i class="ti ti-x"></i></button>`:''}
+      ${rows.length>1?`<button class="del-row" onclick="delRow(${r.id})"><i class="ti ti-x"></i></button>`:''}
       <div class="g2" style="margin-bottom:12px">
         <div class="field"><label>Prodotto</label><select id="sp-${r.id}" onchange="onProdChange(${r.id})">${prodOpts(r.prod)}</select></div>
         <div style="display:${r.newOpen?'block':'none'}">
@@ -358,12 +370,11 @@ function renderRows(){
       </div>
       <div class="price-wrap" style="margin-bottom:10px">
         <div class="field"><label>Prezzo €/kg</label><input type="number" id="price-${r.id}" placeholder="0.000" min="0" step="0.001" inputmode="decimal" value="${r.price}" ${r.useLastPrice?'disabled':''} oninput="upd(${r.id},'price',this.value)"/></div>
-        <button class="last-btn${r.useLastPrice?' on':''}" onclick="toggleLast(${r.id})" title="Usa ultimo prezzo"><i class="ti ti-history" style="font-size:14px"></i> Ult.</button>
+        <button class="last-btn${r.useLastPrice?' on':''}" onclick="toggleLast(${r.id})"><i class="ti ti-history" style="font-size:14px"></i> Ult.</button>
       </div>
       <div class="field"><label><i class="ti ti-notes" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>Note</label><textarea id="note-${r.id}" placeholder="Istruzioni particolari, specifiche di consegna…" oninput="upd(${r.id},'note',this.value)">${esc(r.note)}</textarea></div>
     </div>`).join('');
 }
-
 function upd(id,k,v){const r=rows.find(r=>r.id===id);if(r)r[k]=v;}
 function delRow(id){rows=rows.filter(r=>r.id!==id);renderRows();}
 function onProdChange(id){
@@ -392,10 +403,10 @@ function confirmOrder(){
     rows:rows.map(r=>({prod:r.prod,qty:parseFloat(r.qty),dest:r.dest,price:parseFloat(r.price)||null,usedLast:r.useLastPrice,date:r.date,note:r.note.trim()}))});
   rows=[];document.getElementById('selCliente').value='';document.getElementById('newClienteWrap').style.display='none';
   addRow();renderOrders();
+  showToast('Ordine aggiunto all\'elenco');
 }
 
 function delOrder(id){orders=orders.filter(o=>o.id!==id);renderOrders();}
-
 function toggleSent(id){const o=orders.find(o=>o.id===id);if(!o)return;o.sentAt=o.sentAt?null:new Date().toISOString();if(!o.sentAt)o.readAt=null;renderOrders();}
 function toggleRead(id){const o=orders.find(o=>o.id===id);if(!o||!o.sentAt)return;o.readAt=o.readAt?null:new Date().toISOString();renderOrders();}
 
@@ -411,9 +422,7 @@ function renderOrders(){
           <div class="ord-client">${circ(16)}&nbsp;<span class="ord-client-name">${esc(o.cliente)}</span></div>
           <div class="ord-meta">${o.rows.length} riga${o.rows.length>1?'e':''} · ${o.rows.reduce((s,r)=>s+r.qty,0).toLocaleString('it-IT')} kg</div>
         </div>
-        <div class="ord-actions">
-          <button class="ord-del" onclick="delOrder(${o.id})" aria-label="Elimina"><i class="ti ti-trash" style="font-size:18px"></i></button>
-        </div>
+        <button class="ord-del" onclick="delOrder(${o.id})"><i class="ti ti-trash" style="font-size:18px"></i></button>
       </div>
       ${o.rows.map(r=>`<div class="ord-row">
         <div class="ord-row-top">
@@ -428,53 +437,72 @@ function renderOrders(){
       <div class="status-row">
         <button class="s-pill sent${o.sentAt?' active':''}" onclick="toggleSent(${o.id})">
           <i class="ti ti-send" style="font-size:11px"></i>
-          ${o.sentAt?'Inviato '+new Date(o.sentAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna come inviato'}
+          ${o.sentAt?'Inviato alle '+new Date(o.sentAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna inviato'}
         </button>
         ${o.sentAt?`<button class="s-pill read${o.readAt?' active':''}" onclick="toggleRead(${o.id})">
           <i class="ti ti-${o.readAt?'eye-check':'eye'}" style="font-size:11px"></i>
-          ${o.readAt?'Letto '+new Date(o.readAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna come letto'}
+          ${o.readAt?'Letto alle '+new Date(o.readAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna letto'}
         </button>`:''}
       </div>
     </div>`).join('');
 }
 
-/* ── SEND ── */
-function sendAll(){
+/* ── SEND VIA EMAILJS ── */
+async function sendAll(){
   const email=document.getElementById('emailDest').value.trim();
   if(!email){markErr('emailDest');return;}
+  if(!orders.length)return;
+
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader" style="font-size:16px;animation:spin 1s linear infinite"></i> Invio in corso…';
+
   const today=new Date().toLocaleDateString('it-IT');
-  let body=`VENETA FIOCCHI — NUTRIZIONE ANIMALE\nRIEPILOGO ORDINI del ${today}\n${'═'.repeat(55)}\n\n`;
+  let message=`VENETA FIOCCHI — NUTRIZIONE ANIMALE\nRIEPILOGO ORDINI del ${today}\n${'═'.repeat(55)}\n\n`;
   orders.forEach((o,i)=>{
-    body+=`ORDINE ${i+1} — ${o.cliente}\n${'─'.repeat(40)}\n`;
+    message+=`ORDINE ${i+1} — ${o.cliente}\n${'─'.repeat(40)}\n`;
     o.rows.forEach((r,j)=>{
-      body+=`  Riga ${j+1}:\n    Prodotto:     ${r.prod}\n    Quantità:     ${r.qty} kg\n    Destinazione: ${r.dest}\n    Prezzo:       ${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?' (ultimo prezzo)':''):'non specificato'}\n    Consegna:     ${fd(r.date)}\n`;
-      if(r.note)body+=`    Note:         ${r.note}\n`;
+      message+=`  Riga ${j+1}:\n`;
+      message+=`    Prodotto:     ${r.prod}\n`;
+      message+=`    Quantità:     ${r.qty} kg\n`;
+      message+=`    Destinazione: ${r.dest}\n`;
+      message+=`    Prezzo:       ${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?' (ultimo prezzo)':''):'non specificato'}\n`;
+      message+=`    Consegna:     ${fd(r.date)}\n`;
+      if(r.note)message+=`    Note:         ${r.note}\n`;
     });
-    body+='\n';
+    message+='\n';
   });
-  const sub=`[VF Ordini] ${today} — ${orders.length} ordine${orders.length>1?'i':''}`;
-  const now=new Date().toISOString();
-  orders.forEach(o=>{ if(!o.sentAt) o.sentAt=now; });
-  renderOrders();
-  window.location.href=`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+
+  const templateParams={
+    to_email: email,
+    subject: `[VF Ordini] ${today} — ${orders.length} ordine${orders.length>1?'i':''}`,
+    message: message
+  };
+
+  try{
+    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, templateParams);
+    const now=new Date().toISOString();
+    orders.forEach(o=>{if(!o.sentAt)o.sentAt=now;});
+    renderOrders();
+    showToast('✓ Mail inviata a '+email,'success');
+  }catch(err){
+    console.error('EmailJS error:',err);
+    showToast('Errore invio: '+err.text,'error');
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-send" style="font-size:16px"></i> Invia ora';
+  }
 }
 
 /* ── AGENDA ── */
 function agendaMove(d){agendaDate=new Date(agendaDate.getFullYear(),agendaDate.getMonth()+d,1);renderAgenda();}
 function agendaToday(){agendaDate=new Date();renderAgenda();}
-
 function getWeeks(y,m){
   const weeks=[],last=new Date(y,m+1,0);
-  let cur=new Date(y,m,1);
-  let dow=cur.getDay();if(dow===0)dow=7;cur.setDate(cur.getDate()-(dow-1));
-  let n=1;
-  while(cur<=last){
-    const s=new Date(cur),e=new Date(cur);e.setDate(e.getDate()+6);
-    weeks.push({n:n++,start:s,end:e});cur.setDate(cur.getDate()+7);
-  }
+  let cur=new Date(y,m,1),dow=cur.getDay();if(dow===0)dow=7;cur.setDate(cur.getDate()-(dow-1));
+  let n=1;while(cur<=last){const s=new Date(cur),e=new Date(cur);e.setDate(e.getDate()+6);weeks.push({n:n++,start:s,end:e});cur.setDate(cur.getDate()+7);}
   return weeks;
 }
-
 function renderAgenda(){
   const y=agendaDate.getFullYear(),m=agendaDate.getMonth();
   document.getElementById('agendaTitle').innerHTML=`${MONTHS[m]} <span>${y}</span>`;
@@ -482,15 +510,13 @@ function renderAgenda(){
   const mo=orders.filter(o=>o.rows.some(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}));
   const tRows=mo.reduce((s,o)=>s+o.rows.filter(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}).length,0);
   const tKg=mo.reduce((s,o)=>s+o.rows.filter(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}).reduce((a,r)=>a+r.qty,0),0);
-  const sent=mo.filter(o=>o.sentAt).length;
-  const read=mo.filter(o=>o.readAt).length;
+  const sent=mo.filter(o=>o.sentAt).length,read=mo.filter(o=>o.readAt).length;
   document.getElementById('agendaSubtitle').textContent=`${mo.length} ordini · ${tRows} righe prodotto`;
   document.getElementById('agendaStats').innerHTML=`
     <div class="stat-card"><div class="stat-val">${mo.length}</div><div class="stat-lbl">Ordini</div></div>
     <div class="stat-card"><div class="stat-val">${Math.round(tKg).toLocaleString('it-IT')}</div><div class="stat-lbl">Kg totali</div></div>
     <div class="stat-card"><div class="stat-val" style="${sent>0?'color:#d4880f':''}">${sent}</div><div class="stat-lbl">Inviati</div></div>
     <div class="stat-card"><div class="stat-val" style="${read>0?'color:#3b6d11':''}">${read}</div><div class="stat-lbl">Letti</div></div>`;
-
   const today=isoDate(new Date());
   const weeks=getWeeks(y,m);
   let html='';
@@ -500,41 +526,26 @@ function renderAgenda(){
     const wKg=wo.reduce((s,o)=>s+o.rows.reduce((a,r)=>a+r.qty,0),0);
     const sf=`${w.start.getDate()} ${MONTHS[w.start.getMonth()].slice(0,3).toLowerCase()}`;
     const ef=`${w.end.getDate()} ${MONTHS[w.end.getMonth()].slice(0,3).toLowerCase()}`;
-    html+=`<div class="week-block">
-      <div class="week-hdr">
-        <div class="week-pill">Settimana ${w.n}</div>
-        <div class="week-dates">${sf} – ${ef}</div>
-        <div class="week-line"></div>
-        <div class="week-count">${wo.length>0?`${wo.length} ord · ${Math.round(wKg)} kg`:''}</div>
-      </div>`;
+    html+=`<div class="week-block"><div class="week-hdr"><div class="week-pill">Settimana ${w.n}</div><div class="week-dates">${sf} – ${ef}</div><div class="week-line"></div><div class="week-count">${wo.length>0?`${wo.length} ord · ${Math.round(wKg)} kg`:''}</div></div>`;
     if(!wo.length){html+=`<div class="empty-week"><i class="ti ti-calendar-off" style="font-size:13px;margin-right:5px;opacity:.5"></i>Nessuna consegna prevista</div>`;}
     else{
       const byDate={};
       wo.forEach(o=>o.rows.forEach(r=>{if(!byDate[r.date])byDate[r.date]=[];byDate[r.date].push({o,r});}));
       Object.keys(byDate).sort().forEach(date=>{
-        const dt=new Date(date+'T00:00:00');
-        const isToday=date===today;
-        const byOrd={};
-        byDate[date].forEach(({o,r})=>{if(!byOrd[o.id])byOrd[o.id]={o,rows:[]};byOrd[o.id].rows.push(r);});
+        const dt=new Date(date+'T00:00:00'),isToday=date===today;
+        const byOrd={};byDate[date].forEach(({o,r})=>{if(!byOrd[o.id])byOrd[o.id]={o,rows:[]};byOrd[o.id].rows.push(r);});
         Object.values(byOrd).forEach(({o,rows})=>{
           const rKg=rows.reduce((s,r)=>s+r.qty,0);
-          html+=`<div class="ag-card">
-            <div class="ag-card-hdr">
-              <div class="ag-date-badge" style="${isToday?'background:var(--or)':''}">
-                <div class="ag-day">${dt.getDate()}</div>
-                <div class="ag-weekday">${DAYS[dt.getDay()]}</div>
+          html+=`<div class="ag-card"><div class="ag-card-hdr">
+            <div class="ag-date-badge" style="${isToday?'background:var(--or)':''}"><div class="ag-day">${dt.getDate()}</div><div class="ag-weekday">${DAYS[dt.getDay()]}</div></div>
+            <div class="ag-info">
+              <div class="ag-client-name">${esc(o.cliente)}</div>
+              <div class="ag-sub">${rows.length} prod · ${Math.round(rKg*10)/10} kg
+                ${o.sentAt?`<span class="sp-sent"><i class="ti ti-send" style="font-size:9px"></i>Inviato</span>`:''}
+                ${o.readAt?`<span class="sp-read"><i class="ti ti-eye-check" style="font-size:9px"></i>Letto</span>`:''}
               </div>
-              <div class="ag-info">
-                <div class="ag-client-name">${esc(o.cliente)}</div>
-                <div class="ag-sub">
-                  ${rows.length} prod · ${Math.round(rKg*10)/10} kg
-                  ${o.sentAt?`<span class="sp-sent"><i class="ti ti-send" style="font-size:9px"></i>Inviato</span>`:''}
-                  ${o.readAt?`<span class="sp-read"><i class="ti ti-eye-check" style="font-size:9px"></i>Letto</span>`:''}
-                </div>
-              </div>
-            </div>
-            ${rows.map(r=>`<div class="ag-row">
-              <div class="ag-prod">${esc(r.prod)}</div>
+            </div></div>
+            ${rows.map(r=>`<div class="ag-row"><div class="ag-prod">${esc(r.prod)}</div>
               <span class="chip"><i class="ti ti-weight" style="font-size:10px"></i>${r.qty.toLocaleString('it-IT')} kg</span>
               <span class="chip"><i class="ti ti-map-pin" style="font-size:10px"></i>${esc(r.dest)}</span>
               ${r.price!=null?`<span class="pricetag">€ ${r.price.toFixed(3)}/kg</span>`:''}
@@ -548,6 +559,11 @@ function renderAgenda(){
   });
   document.getElementById('agendaBody').innerHTML=html||'<div class="empty"><i class="ti ti-calendar"></i>Nessun ordine in questo mese</div>';
 }
+
+/* ── SPIN ANIMATION ── */
+const style=document.createElement('style');
+style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
 
 /* ── INIT ── */
 document.getElementById('todayDate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
