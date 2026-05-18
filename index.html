@@ -46,15 +46,23 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .field input::placeholder,.field textarea::placeholder{color:var(--hi)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g2m{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:500px){.g2{grid-template-columns:1fr}}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:500px){.g2,.g3{grid-template-columns:1fr}.g2m{grid-template-columns:1fr 1fr}}
 .inline-add{display:flex;gap:8px;margin-top:5px}
 .inline-add input{flex:1;height:42px;padding:0 12px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--tx);font-size:16px;font-family:inherit}
 .mini-btn{height:42px;min-width:42px;border-radius:10px;border:1.5px solid var(--bor);background:#fff;color:var(--mu);font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
 .mini-btn.ok{background:var(--br);color:#fff;border-color:var(--br)}
+/* CONFEZIONE TOGGLE */
+.conf-group{display:flex;gap:8px;flex-wrap:wrap}
+.conf-btn{flex:1;min-width:80px;height:44px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--mu);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.conf-btn.sel{background:var(--br);color:#fff;border-color:var(--br)}
+.conf-btn:active{transform:scale(.97)}
+/* CHI ORDINA */
 .chi-banner{background:var(--orp);border:1.5px solid var(--orl);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:12px}
 .chi-avatar{width:36px;height:36px;border-radius:50%;background:var(--br);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
 .chi-name{font-size:14px;font-weight:700;color:var(--br)}
-.chi-label{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px}
+.chi-email{font-size:11px;color:var(--mu);margin-top:1px}
+/* ROW CARD */
 .row-card{border:1.5px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;background:var(--bg)}
 .row-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .row-num{width:24px;height:24px;border-radius:50%;background:var(--orp);border:1.5px solid var(--orl);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--br)}
@@ -68,6 +76,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .add-row-btn:active{border-color:var(--or);color:var(--br);background:var(--orp)}
 .confirm-btn{width:100%;height:50px;margin-top:14px;background:var(--br);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
 .confirm-btn:active{background:var(--brd)}
+/* ORDERS */
 .orders-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px}
 .orders-lbl{font-size:11px;font-weight:800;color:var(--br);text-transform:uppercase;letter-spacing:1px}
 .badge{background:var(--or);color:#fff;border-radius:100px;padding:3px 10px;font-size:11px;font-weight:800}
@@ -84,6 +93,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .ord-row-top{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .ord-prod{flex:1;font-weight:700;color:var(--tx);min-width:100px}
 .chip{font-size:11px;color:var(--br);background:var(--orp);border:1px solid var(--bor);border-radius:100px;padding:3px 9px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
+.chip-conf{font-size:11px;font-weight:700;background:var(--br);color:#fff;border-radius:100px;padding:3px 10px;white-space:nowrap}
 .pricetag{font-size:11px;font-weight:800;color:var(--br);background:var(--orp);border:1px solid var(--orl);border-radius:100px;padding:3px 10px;white-space:nowrap}
 .ord-note{margin-top:6px;font-size:11px;color:var(--mu);display:flex;gap:5px;padding:6px 9px;background:var(--orp);border-radius:8px;border-left:3px solid var(--orl)}
 .status-row{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg);border-top:1px solid var(--bor);flex-wrap:wrap}
@@ -105,6 +115,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.success{background:#3b6d11}
 .toast.error{background:#c0392b}
+/* AGENDA */
 .agenda-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap}
 .agenda-month{font-size:20px;font-weight:800;color:var(--br);text-transform:capitalize}
 .agenda-month span{font-weight:400;color:var(--mu);font-size:16px;margin-left:5px}
@@ -193,17 +204,24 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
         </select>
       </div>
       <div id="newAgenteWrap" style="display:none">
-        <div class="field"><label>Nuovo nome</label></div>
-        <div class="inline-add">
-          <input type="text" id="newAgenteInput" placeholder="Nome e cognome"/>
-          <button class="mini-btn ok" onclick="addAgente()"><i class="ti ti-check"></i></button>
+        <div class="field"><label>Nome</label>
+          <input type="text" id="newAgenteName" placeholder="Nome e cognome"/>
+        </div>
+        <div class="field" style="margin-top:8px"><label>Email agente</label>
+          <input type="email" id="newAgenteEmail" placeholder="nome@venetafiocchi.it"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="mini-btn ok" style="flex:1;font-size:13px" onclick="addAgente()"><i class="ti ti-check"></i> Aggiungi</button>
           <button class="mini-btn" onclick="cancelAgente()"><i class="ti ti-x"></i></button>
         </div>
       </div>
     </div>
     <div class="chi-banner" id="agenteBanner" style="display:none">
       <div class="chi-avatar" id="agenteAvatar"></div>
-      <div><div class="chi-name" id="agenteName"></div><div class="chi-label">sta inserendo l'ordine</div></div>
+      <div>
+        <div class="chi-name" id="agenteName"></div>
+        <div class="chi-email" id="agenteEmailDisplay"></div>
+      </div>
     </div>
   </div>
 
@@ -259,14 +277,14 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
     </div>
     <div class="send-email-row">
       <div class="field">
-        <label>Email destinatario</label>
-        <input type="email" id="emailDest" value="andrea.fantini@venetafiocchi.it"/>
+        <label>Email ufficio (destinatario fisso)</label>
+        <input type="email" id="emailDest" value="info@venetafiocchi.it" readonly style="background:var(--bg);color:var(--mu)"/>
       </div>
       <button class="send-btn" id="sendBtn" onclick="sendAll()">
         <i class="ti ti-send" style="font-size:16px"></i> Invia ora
       </button>
     </div>
-    <p class="hint"><i class="ti ti-mail" style="font-size:13px"></i> Apparirà inviata da <strong>ordini@venetafiocchi.it</strong> con tabella HTML formattata</p>
+    <p class="hint" id="sendHint"><i class="ti ti-mail" style="font-size:13px"></i> Mail inviata a <strong>info@venetafiocchi.it</strong> e all'agente in CC · mittente: <strong>ordini@venetafiocchi.it</strong></p>
   </div>
 </div>
 
@@ -292,9 +310,25 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 <script>
 emailjs.init('oo5yBjwrgq7kYiOTa');
 const EJS_SERVICE='service_kku0qla', EJS_TEMPLATE='template_vvmovxc';
+const OFFICE_EMAIL='info@venetafiocchi.it';
+
 const PRODUCTS=['BOVIMIX 109 UNIFEED','BOVIMIX 111','BOVIMIX 112','FIBRA FLAKES 311 P','FIBRA FLAKES 314 P','FIBRA FLAKES 314 P FINISH','FIBRA FLAKES 314 PP','FIBRA FLAKES 314 PP FINISH','FIBRA FLAKES 315 PP','FIBRA FLAKES STARTER','FIOCCO DI LUPINO AUSTRALIANO','FP-NUCLEOVIT 28 CO','KÄLBERMÜSLI','MULTIPARTICLE STARTER','MULTIPARTICLE STARTER 20','NUCLEOFLAKES 27','NUCLEOVIT 50','VITELLI START 170'];
-let products=[...PRODUCTS], agenti=['Andrea','Massimo'];
-let lastPrices={}, rows=[], orders=[], rowId=0, currentAgente='';
+let products=[...PRODUCTS];
+
+// Agenti con email
+let agenti=[
+  {nome:'Andrea', email:'andrea.fantini@venetafiocchi.it'},
+  {nome:'Massimo', email:'massimo@venetafiocchi.it'}
+];
+
+let lastPrices={}, rows=[], orders=[], rowId=0;
+let currentAgente=null; // {nome, email}
+
+const CONF_OPTS=[
+  {val:'Sacco', icon:'ti-package'},
+  {val:'Big Bag', icon:'ti-box'},
+  {val:'Rinfusa', icon:'ti-grain'}
+];
 const DAYS=['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
 const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 let agendaDate=new Date();
@@ -306,27 +340,73 @@ function initials(n){return n.trim().split(/\s+/).map(w=>w[0]).join('').toUpperC
 function circ(s){return`<svg width="${s}" height="${s}" viewBox="0 0 100 100" style="border-radius:50%;flex-shrink:0;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="#7B3B10"/><path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/><path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/><path d="M50,50 L50,90 A40,40 0 0,1 10,50 Z" fill="#F5A020" opacity=".7"/><path d="M50,50 L10,50 A40,40 0 0,1 50,10 Z" fill="#FAC85A" opacity=".5"/><line x1="50" y1="10" x2="50" y2="90" stroke="#7B3B10" stroke-width="3"/><line x1="10" y1="50" x2="90" y2="50" stroke="#7B3B10" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#7B3B10"/></svg>`;}
 
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.className='toast '+type;t.innerHTML=(type==='success'?'<i class="ti ti-circle-check"></i>':'<i class="ti ti-circle-x"></i>')+' '+msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
-
 function switchTab(t){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');document.getElementById('tab-'+t).classList.add('active');if(t==='agenda')renderAgenda();}
+function markErr(id){const e=document.getElementById(id);if(!e)return;e.classList.add('err');setTimeout(()=>e.classList.remove('err'),1600);}
 
+/* ── AGENTE ── */
 function onAgenteChange(){
   const v=document.getElementById('selAgente').value;
   document.getElementById('newAgenteWrap').style.display=v==='__new__'?'block':'none';
-  if(v==='__new__'){currentAgente='';document.getElementById('agenteBanner').style.display='none';setTimeout(()=>document.getElementById('newAgenteInput').focus(),60);}
-  else{currentAgente=v;updateBanner();}
+  if(v==='__new__'){currentAgente=null;document.getElementById('agenteBanner').style.display='none';setTimeout(()=>document.getElementById('newAgenteName').focus(),60);}
+  else if(v){
+    currentAgente=agenti.find(a=>a.nome===v)||{nome:v,email:''};
+    updateBanner();
+  } else {currentAgente=null;document.getElementById('agenteBanner').style.display='none';}
 }
-function addAgente(){const inp=document.getElementById('newAgenteInput'),n=inp.value.trim();if(!n)return;if(!agenti.includes(n))agenti.push(n);const sel=document.getElementById('selAgente'),opt=document.createElement('option');opt.value=n;opt.textContent=n;sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));sel.value=n;inp.value='';document.getElementById('newAgenteWrap').style.display='none';currentAgente=n;updateBanner();}
-function cancelAgente(){document.getElementById('newAgenteWrap').style.display='none';document.getElementById('selAgente').value='';currentAgente='';document.getElementById('agenteBanner').style.display='none';}
-function updateBanner(){const b=document.getElementById('agenteBanner');if(!currentAgente){b.style.display='none';return;}b.style.display='flex';document.getElementById('agenteAvatar').textContent=initials(currentAgente);document.getElementById('agenteName').textContent=currentAgente;}
+function addAgente(){
+  const nome=document.getElementById('newAgenteName').value.trim();
+  const email=document.getElementById('newAgenteEmail').value.trim();
+  if(!nome)return;
+  const ag={nome,email};
+  if(!agenti.find(a=>a.nome===nome)) agenti.push(ag);
+  const sel=document.getElementById('selAgente'),opt=document.createElement('option');
+  opt.value=nome;opt.textContent=nome;
+  sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));
+  sel.value=nome;
+  document.getElementById('newAgenteName').value='';
+  document.getElementById('newAgenteEmail').value='';
+  document.getElementById('newAgenteWrap').style.display='none';
+  currentAgente=ag;updateBanner();
+}
+function cancelAgente(){document.getElementById('newAgenteWrap').style.display='none';document.getElementById('selAgente').value='';currentAgente=null;document.getElementById('agenteBanner').style.display='none';}
+function updateBanner(){
+  const b=document.getElementById('agenteBanner');
+  if(!currentAgente){b.style.display='none';return;}
+  b.style.display='flex';
+  document.getElementById('agenteAvatar').textContent=initials(currentAgente.nome);
+  document.getElementById('agenteName').textContent=currentAgente.nome;
+  document.getElementById('agenteEmailDisplay').textContent=currentAgente.email||'(nessuna email impostata)';
+  // aggiorna hint
+  const hint=document.getElementById('sendHint');
+  const cc=currentAgente.email?' + '+currentAgente.email+' (CC)':'';
+  hint.innerHTML=`<i class="ti ti-mail" style="font-size:13px"></i> Mail a <strong>${OFFICE_EMAIL}</strong>${cc} · mittente: <strong>ordini@venetafiocchi.it</strong>`;
+}
 
+/* ── PRODOTTI ── */
 function prodOpts(sel){return'<option value="">— scegli prodotto —</option>'+products.map(p=>`<option${p===sel?' selected':''}>${p}</option>`).join('')+'<option value="__new__">+ Nuovo prodotto...</option>';}
 
-function addRow(){rows.push({id:++rowId,prod:'',qty:'',dest:'',price:'',note:'',useLastPrice:false,newOpen:false});renderRows();}
+/* ── CONFEZIONE ── */
+function confHtml(rowId, selVal){
+  return CONF_OPTS.map(c=>`<button type="button" class="conf-btn${c.val===selVal?' sel':''}" onclick="setConf(${rowId},'${c.val}')">
+    <i class="ti ${c.icon}" style="font-size:14px"></i> ${c.val}
+  </button>`).join('');
+}
+function setConf(id,val){
+  const r=rows.find(r=>r.id===id);if(!r)return;
+  r.conf=val;
+  // aggiorna solo i bottoni senza re-render tutto
+  const rc=document.getElementById('rc-'+id);
+  if(rc) rc.querySelectorAll('.conf-btn').forEach(b=>{b.classList.toggle('sel',b.textContent.trim()===val);});
+}
+
+/* ── RIGHE ── */
+function addRow(){rows.push({id:++rowId,prod:'',qty:'',dest:'',conf:'Sacco',price:'',note:'',useLastPrice:false,newOpen:false});renderRows();}
 function renderRows(){
   document.getElementById('rowsList').innerHTML=rows.map((r,i)=>`
     <div class="row-card" id="rc-${r.id}">
       <div class="row-head"><div class="row-num">${i+1}</div><span style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px">Riga prodotto</span></div>
       ${rows.length>1?`<button class="del-row" onclick="delRow(${r.id})"><i class="ti ti-x"></i></button>`:''}
+
       <div class="g2" style="margin-bottom:12px">
         <div class="field"><label>Prodotto</label><select id="sp-${r.id}" onchange="onProdChange(${r.id})">${prodOpts(r.prod)}</select></div>
         <div style="display:${r.newOpen?'block':'none'}">
@@ -336,15 +416,24 @@ function renderRows(){
           <button class="mini-btn" onclick="cancelProd(${r.id})"><i class="ti ti-x"></i></button></div>
         </div>
       </div>
+
+      <div class="field" style="margin-bottom:12px">
+        <label><i class="ti ti-package" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>Confezione</label>
+        <div class="conf-group">${confHtml(r.id, r.conf)}</div>
+      </div>
+
       <div class="field" style="margin-bottom:10px"><label>Destinazione</label><input type="text" id="dest-${r.id}" placeholder="Magazzino / sede" value="${esc(r.dest)}" oninput="upd(${r.id},'dest',this.value)"/></div>
+
       <div class="g2m" style="margin-bottom:10px">
         <div class="field"><label>Quantità (kg)</label><input type="number" id="qty-${r.id}" placeholder="0" min="0" step="0.1" value="${r.qty}" inputmode="decimal" oninput="upd(${r.id},'qty',this.value)"/></div>
         <div class="field"><label>Data consegna</label><input type="date" id="data-${r.id}" value="${r.date||''}" oninput="upd(${r.id},'date',this.value)"/></div>
       </div>
+
       <div class="price-wrap" style="margin-bottom:10px">
         <div class="field"><label>Prezzo €/kg</label><input type="number" id="price-${r.id}" placeholder="0.000" min="0" step="0.001" inputmode="decimal" value="${r.price}" ${r.useLastPrice?'disabled':''} oninput="upd(${r.id},'price',this.value)"/></div>
         <button class="last-btn${r.useLastPrice?' on':''}" onclick="toggleLast(${r.id})"><i class="ti ti-history" style="font-size:14px"></i> Ult.</button>
       </div>
+
       <div class="field"><label><i class="ti ti-notes" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>Note</label>
         <textarea id="note-${r.id}" placeholder="Istruzioni particolari, specifiche di consegna…" oninput="upd(${r.id},'note',this.value)">${esc(r.note)}</textarea>
       </div>
@@ -360,7 +449,6 @@ function toggleLast(id){const r=rows.find(r=>r.id===id);r.useLastPrice=!r.useLas
 function onClienteChange(){const sel=document.getElementById('selCliente');document.getElementById('newClienteWrap').style.display=sel.value==='__new__'?'block':'none';if(sel.value==='__new__')setTimeout(()=>document.getElementById('newClienteInput').focus(),60);}
 function addCliente(){const inp=document.getElementById('newClienteInput'),n=inp.value.trim();if(!n)return;const sel=document.getElementById('selCliente'),opt=document.createElement('option');opt.value=n;opt.textContent=n;sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));sel.value=n;inp.value='';document.getElementById('newClienteWrap').style.display='none';}
 function cancelCliente(){document.getElementById('newClienteWrap').style.display='none';document.getElementById('selCliente').value='';}
-function markErr(id){const e=document.getElementById(id);if(!e)return;e.classList.add('err');setTimeout(()=>e.classList.remove('err'),1600);}
 
 function confirmOrder(){
   if(!currentAgente){markErr('selAgente');showToast('Scegli chi inserisce l\'ordine','error');return;}
@@ -371,11 +459,12 @@ function confirmOrder(){
   rows.forEach(r=>{if(!r.prod){markErr('sp-'+r.id);ok=false;}if(!r.qty){markErr('qty-'+r.id);ok=false;}if(!r.dest){markErr('dest-'+r.id);ok=false;}if(!r.date){markErr('data-'+r.id);ok=false;}});
   if(!ok)return;
   rows.forEach(r=>{const p=parseFloat(r.price);if(!isNaN(p)&&p>0)lastPrices[r.prod]=p;});
-  orders.push({id:Date.now(),cliente:cl,agente:currentAgente,sentAt:null,readAt:null,
-    rows:rows.map(r=>({prod:r.prod,qty:parseFloat(r.qty),dest:r.dest,price:parseFloat(r.price)||null,usedLast:r.useLastPrice,date:r.date,note:r.note.trim()}))});
+  orders.push({id:Date.now(),cliente:cl,agente:currentAgente.nome,agenteEmail:currentAgente.email||'',sentAt:null,readAt:null,
+    rows:rows.map(r=>({prod:r.prod,conf:r.conf||'Sacco',qty:parseFloat(r.qty),dest:r.dest,price:parseFloat(r.price)||null,usedLast:r.useLastPrice,date:r.date,note:r.note.trim()}))});
   rows=[];document.getElementById('selCliente').value='';document.getElementById('newClienteWrap').style.display='none';
-  addRow();renderOrders();showToast('Ordine di '+currentAgente+' aggiunto!');
+  addRow();renderOrders();showToast('Ordine di '+currentAgente.nome+' aggiunto!');
 }
+
 function delOrder(id){orders=orders.filter(o=>o.id!==id);renderOrders();}
 function toggleSent(id){const o=orders.find(o=>o.id===id);if(!o)return;o.sentAt=o.sentAt?null:new Date().toISOString();if(!o.sentAt)o.readAt=null;renderOrders();}
 function toggleRead(id){const o=orders.find(o=>o.id===id);if(!o||!o.sentAt)return;o.readAt=o.readAt?null:new Date().toISOString();renderOrders();}
@@ -400,6 +489,7 @@ function renderOrders(){
       ${o.rows.map(r=>`<div class="ord-row">
         <div class="ord-row-top">
           <div class="ord-prod">${esc(r.prod)}</div>
+          <span class="chip-conf"><i class="ti ti-package" style="font-size:10px"></i>${r.conf}</span>
           <span class="chip"><i class="ti ti-weight" style="font-size:11px"></i>${r.qty.toLocaleString('it-IT')} kg</span>
           <span class="chip"><i class="ti ti-map-pin" style="font-size:11px"></i>${esc(r.dest)}</span>
           <span class="chip"><i class="ti ti-calendar" style="font-size:11px"></i>${fd(r.date)}</span>
@@ -422,41 +512,57 @@ function renderOrders(){
 
 /* ── HTML EMAIL ── */
 function buildEmail(list, today){
-  const ordersHtml=list.map((o,i)=>{
-    const righe=o.rows.map((r,j)=>`<tr style="background:${j%2===0?'#fdfaf6':'#fff'}">
-      <td style="padding:9px 12px;font-size:13px;font-weight:600;color:#3D1F08;border-bottom:1px solid #E8D5B8">${esc(r.prod)}</td>
-      <td style="padding:9px 12px;font-size:13px;text-align:center;border-bottom:1px solid #E8D5B8">${r.qty.toLocaleString('it-IT')} kg</td>
-      <td style="padding:9px 12px;font-size:13px;border-bottom:1px solid #E8D5B8">${esc(r.dest)}</td>
-      <td style="padding:9px 12px;font-size:13px;text-align:center;border-bottom:1px solid #E8D5B8">${fd(r.date)}</td>
-      <td style="padding:9px 12px;font-size:13px;text-align:center;font-weight:700;color:#7B3B10;border-bottom:1px solid #E8D5B8">${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?' (ult.)':''):'—'}</td>
-      <td style="padding:9px 12px;font-size:12px;color:#9A7355;border-bottom:1px solid #E8D5B8">${r.note?esc(r.note):'—'}</td>
-    </tr>`).join('');
-    return `<div style="margin-bottom:20px;border-radius:10px;overflow:hidden;border:1px solid #E8D5B8">
-      <div style="background:#7B3B10;padding:12px 16px">
-        <div style="font-size:15px;font-weight:700;color:#fff">ORDINE ${i+1} — ${esc(o.cliente)}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:3px">Agente: <strong style="color:#FAC85A">${esc(o.agente)}</strong> &nbsp;·&nbsp; ${o.rows.length} riga${o.rows.length>1?'e':''} prodotto</div>
-      </div>
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-        <thead><tr style="background:#FEF3E2">
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Prodotto</th>
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Qtà</th>
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Destinazione</th>
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Consegna</th>
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Prezzo</th>
-          <th style="padding:8px 12px;font-size:10px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E8D5B8">Note</th>
-        </tr></thead>
-        <tbody>${righe}</tbody>
-      </table>
-    </div>`;
-  }).join('');
-
   const totKg=list.reduce((s,o)=>s+o.rows.reduce((a,r)=>a+r.qty,0),0);
   const agentiList=[...new Set(list.map(o=>o.agente))].join(', ');
 
+  const ordersHtml=list.map((o,i)=>{
+    const righe=o.rows.map((r,j)=>`
+      <tr style="background:${j%2===0?'#fdfaf6':'#ffffff'}">
+        <td style="padding:11px 14px;font-size:13px;font-weight:600;color:#3D1F08;border-bottom:1px solid #E8D5B8;min-width:180px">${esc(r.prod)}</td>
+        <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #E8D5B8;white-space:nowrap">
+          <span style="background:#7B3B10;color:#fff;border-radius:100px;padding:3px 10px;font-size:12px;font-weight:700">${r.conf}</span>
+        </td>
+        <td style="padding:11px 14px;font-size:15px;font-weight:800;color:#3D1F08;border-bottom:1px solid #E8D5B8;text-align:right;white-space:nowrap;min-width:110px">
+          ${r.qty.toLocaleString('it-IT')} <span style="font-size:12px;font-weight:400;color:#9A7355">kg</span>
+        </td>
+        <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #E8D5B8;min-width:140px">${esc(r.dest)}</td>
+        <td style="padding:11px 14px;font-size:13px;text-align:center;border-bottom:1px solid #E8D5B8;white-space:nowrap">${fd(r.date)}</td>
+        <td style="padding:11px 14px;font-size:14px;text-align:right;font-weight:800;color:#7B3B10;border-bottom:1px solid #E8D5B8;white-space:nowrap">
+          ${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?'<br><span style="font-size:10px;font-weight:400;color:#9A7355">(ult. prezzo)</span>':''):'—'}
+        </td>
+        <td style="padding:11px 14px;font-size:12px;color:#9A7355;border-bottom:1px solid #E8D5B8">${r.note?esc(r.note):'—'}</td>
+      </tr>`).join('');
+    return `
+      <div style="margin-bottom:24px;border-radius:10px;overflow:hidden;border:1px solid #E8D5B8">
+        <div style="background:#7B3B10;padding:14px 18px">
+          <div style="font-size:16px;font-weight:700;color:#fff">ORDINE ${i+1} — ${esc(o.cliente)}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">
+            Agente: <strong style="color:#FAC85A">${esc(o.agente)}</strong>
+            &nbsp;·&nbsp; ${o.rows.length} riga${o.rows.length>1?'e':''} prodotto
+            &nbsp;·&nbsp; ${o.rows.reduce((s,r)=>s+r.qty,0).toLocaleString('it-IT')} kg totali
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;min-width:600px">
+          <thead><tr style="background:#FEF3E2">
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prodotto</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Confezione</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Quantità</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Destinazione</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Consegna</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prezzo</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Note</th>
+          </tr></thead>
+          <tbody>${righe}</tbody>
+        </table>
+        </div>
+      </div>`;
+  }).join('');
+
   return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f0ea;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-<div style="max-width:700px;margin:0 auto;padding:20px">
-  <div style="background:#7B3B10;border-radius:12px 12px 0 0;padding:18px 24px;display:flex;align-items:center;gap:14px">
-    <svg width="46" height="46" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<div style="max-width:760px;margin:0 auto;padding:20px">
+  <div style="background:#7B3B10;border-radius:12px 12px 0 0;padding:20px 26px;display:flex;align-items:center;gap:16px">
+    <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <circle cx="50" cy="50" r="48" fill="#5C2A08"/>
       <path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/>
       <path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/>
@@ -468,42 +574,46 @@ function buildEmail(list, today){
       <circle cx="50" cy="50" r="48" fill="none" stroke="#F5A020" stroke-width="2"/>
     </svg>
     <div style="flex:1">
-      <div style="font-size:20px;font-weight:700;font-style:italic;color:#F5A020">Veneta<span style="color:#FAC85A">Fiocchi</span></div>
+      <div style="font-size:22px;font-weight:700;font-style:italic;color:#F5A020">Veneta<span style="color:#FAC85A">Fiocchi</span></div>
       <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Nutrizione Animale</div>
     </div>
     <div style="text-align:right">
-      <div style="font-size:13px;font-weight:700;color:#fff">Riepilogo Ordini</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">${today}</div>
+      <div style="font-size:14px;font-weight:700;color:#fff">Riepilogo Ordini</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">${today}</div>
     </div>
   </div>
-  <div style="background:#FEF3E2;border:1px solid #E8D5B8;border-top:none;padding:12px 24px;display:flex;gap:28px;flex-wrap:wrap">
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.5px">Ordini</div><div style="font-size:20px;font-weight:800;color:#7B3B10">${list.length}</div></div>
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.5px">Righe totali</div><div style="font-size:20px;font-weight:800;color:#7B3B10">${list.reduce((s,o)=>s+o.rows.length,0)}</div></div>
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.5px">Kg totali</div><div style="font-size:20px;font-weight:800;color:#7B3B10">${totKg.toLocaleString('it-IT')}</div></div>
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.5px">Agenti</div><div style="font-size:14px;font-weight:700;color:#7B3B10;margin-top:3px">${agentiList}</div></div>
+  <div style="background:#FEF3E2;border:1px solid #E8D5B8;border-top:none;padding:14px 26px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Ordini</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${list.length}</div></div>
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Righe totali</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${list.reduce((s,o)=>s+o.rows.length,0)}</div></div>
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Kg totali</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${totKg.toLocaleString('it-IT')}</div></div>
+    <div style="margin-left:auto"><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Agenti</div><div style="font-size:13px;font-weight:700;color:#7B3B10">${agentiList}</div></div>
   </div>
   <div style="background:#fff;border:1px solid #E8D5B8;border-top:none;border-radius:0 0 12px 12px;padding:20px 16px 8px">
     ${ordersHtml}
   </div>
-  <div style="text-align:center;padding:14px;font-size:11px;color:#C4A882">
-    Inviato da ordini@venetafiocchi.it tramite app Veneta Fiocchi Ordini
+  <div style="text-align:center;padding:16px;font-size:11px;color:#C4A882">
+    Inviato da <strong>ordini@venetafiocchi.it</strong> tramite app Veneta Fiocchi Ordini
   </div>
 </div>
 </body></html>`;
 }
 
+/* ── SEND ── */
 async function sendAll(){
-  const email=document.getElementById('emailDest').value.trim();
-  if(!email){markErr('emailDest');return;}
   if(!orders.length)return;
   const btn=document.getElementById('sendBtn');
   btn.disabled=true;
   btn.innerHTML='<i class="ti ti-loader" style="font-size:16px;animation:spin 1s linear infinite"></i> Invio…';
+
   const today=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const agentiList=[...new Set(orders.map(o=>o.agente))].join(', ');
+  // CC: tutte le email univoche degli agenti (non vuote)
+  const ccEmails=[...new Set(orders.map(o=>o.agenteEmail).filter(e=>e))].join(',');
+
   try{
     await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-      to_email:     email,
+      to_email:     OFFICE_EMAIL,
+      cc_email:     ccEmails,
       reply_to:     'ordini@venetafiocchi.it',
       from_name:    'Ordini Veneta Fiocchi',
       subject:      `[VF Ordini] ${new Date().toLocaleDateString('it-IT')} — ${orders.length} ordine${orders.length>1?'i':''} (${agentiList})`,
@@ -512,7 +622,7 @@ async function sendAll(){
     const now=new Date().toISOString();
     orders.forEach(o=>{if(!o.sentAt)o.sentAt=now;});
     renderOrders();
-    showToast('✓ Mail inviata a '+email,'success');
+    showToast('✓ Mail inviata!'+(ccEmails?' + CC agente':''),'success');
   }catch(err){
     console.error(err);
     showToast('Errore: '+(err.text||err.message||'riprovare'),'error');
@@ -522,7 +632,7 @@ async function sendAll(){
   }
 }
 
-/* AGENDA */
+/* ── AGENDA ── */
 function agendaMove(d){agendaDate=new Date(agendaDate.getFullYear(),agendaDate.getMonth()+d,1);renderAgenda();}
 function agendaToday(){agendaDate=new Date();renderAgenda();}
 function getWeeks(y,m){const weeks=[],last=new Date(y,m+1,0);let cur=new Date(y,m,1),dow=cur.getDay();if(dow===0)dow=7;cur.setDate(cur.getDate()-(dow-1));let n=1;while(cur<=last){const s=new Date(cur),e=new Date(cur);e.setDate(e.getDate()+6);weeks.push({n:n++,start:s,end:e});cur.setDate(cur.getDate()+7);}return weeks;}
@@ -567,7 +677,9 @@ function renderAgenda(){
                 ${o.readAt?`<span class="sp-read"><i class="ti ti-eye-check" style="font-size:9px"></i>Letto</span>`:''}
               </div>
             </div></div>
-            ${rows.map(r=>`<div class="ag-row"><div class="ag-prod">${esc(r.prod)}</div>
+            ${rows.map(r=>`<div class="ag-row">
+              <div class="ag-prod">${esc(r.prod)}</div>
+              <span class="chip-conf" style="font-size:10px;padding:2px 8px"><i class="ti ti-package" style="font-size:10px"></i>${r.conf}</span>
               <span class="chip"><i class="ti ti-weight" style="font-size:10px"></i>${r.qty.toLocaleString('it-IT')} kg</span>
               <span class="chip"><i class="ti ti-map-pin" style="font-size:10px"></i>${esc(r.dest)}</span>
               ${r.price!=null?`<span class="pricetag">€ ${r.price.toFixed(3)}/kg</span>`:''}
