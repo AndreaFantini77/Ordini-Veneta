@@ -28,8 +28,9 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .hdr-date{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
 @media(max-width:400px){.hdr-right{display:none}}
 .nav{background:var(--brd);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nav-btn{flex:1;min-width:120px;padding:11px 10px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;font-family:inherit}
+.nav-btn{flex:1;min-width:110px;padding:11px 10px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;font-family:inherit;position:relative}
 .nav-btn.active{color:#fff;border-bottom-color:var(--or)}
+.nav-badge{position:absolute;top:6px;right:8px;background:var(--or);color:#fff;border-radius:100px;padding:1px 6px;font-size:9px;font-weight:800;line-height:1.4}
 .page{display:none;padding:14px 14px 100px;flex:1}
 .page.active{display:block}
 .card{background:var(--sf);border:1px solid var(--bor);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 5px rgba(123,59,16,.07)}
@@ -40,28 +41,53 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .field label{font-size:11px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:.6px}
 .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--tx);font-size:16px;font-family:inherit;transition:all .15s;appearance:none;-webkit-appearance:none}
 .field input,.field select{height:44px;padding:0 13px}
-.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A7355' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 .field textarea{padding:11px 13px;resize:none;min-height:70px;line-height:1.5;font-size:15px}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--or);box-shadow:0 0 0 3px rgba(245,160,32,.15)}
 .field input::placeholder,.field textarea::placeholder{color:var(--hi)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g2m{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-@media(max-width:500px){.g2,.g3{grid-template-columns:1fr}.g2m{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.g2{grid-template-columns:1fr}}
 .inline-add{display:flex;gap:8px;margin-top:5px}
 .inline-add input{flex:1;height:42px;padding:0 12px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--tx);font-size:16px;font-family:inherit}
 .mini-btn{height:42px;min-width:42px;border-radius:10px;border:1.5px solid var(--bor);background:#fff;color:var(--mu);font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
 .mini-btn.ok{background:var(--br);color:#fff;border-color:var(--br)}
-/* CONFEZIONE TOGGLE */
+
+/* SEARCHABLE DROPDOWN */
+.sd-wrap{position:relative;width:100%}
+.sd-input-row{display:flex;align-items:center;position:relative}
+.sd-input{width:100%;height:44px;padding:0 40px 0 13px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--tx);font-size:15px;font-family:inherit;transition:all .15s;cursor:pointer}
+.sd-input:focus{outline:none;border-color:var(--or);box-shadow:0 0 0 3px rgba(245,160,32,.15)}
+.sd-input.has-val{font-weight:600;color:var(--br)}
+.sd-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:16px;pointer-events:none;transition:transform .2s}
+.sd-wrap.open .sd-arrow{transform:translateY(-50%) rotate(180deg)}
+.sd-clear{position:absolute;right:34px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--hi);font-size:16px;display:none;padding:2px;line-height:1}
+.sd-wrap.has-val .sd-clear{display:flex;align-items:center}
+.sd-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1.5px solid var(--or);border-radius:12px;box-shadow:0 8px 32px rgba(123,59,16,.18);z-index:999;overflow:hidden;display:none;max-height:300px;flex-direction:column}
+.sd-wrap.open .sd-dropdown{display:flex}
+.sd-search-box{padding:10px 12px;border-bottom:1px solid var(--bor);flex-shrink:0;position:relative}
+.sd-search{width:100%;height:38px;padding:0 12px 0 36px;border:1.5px solid var(--bor);border-radius:8px;background:var(--bg);color:var(--tx);font-size:14px;font-family:inherit}
+.sd-search:focus{outline:none;border-color:var(--or)}
+.sd-search-icon{position:absolute;left:22px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:16px;pointer-events:none}
+.sd-list{overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:220px}
+.sd-item{padding:12px 14px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bor);transition:background .1s}
+.sd-item:last-child{border-bottom:none}
+.sd-item:active{background:var(--orp)}
+.sd-item.selected{background:var(--orp);font-weight:700;color:var(--br)}
+.sd-item.add-new{color:var(--or);font-weight:700;border-top:1px solid var(--bor)}
+.sd-empty{padding:16px;text-align:center;color:var(--hi);font-size:13px}
+.sd-backdrop{position:fixed;inset:0;z-index:998;background:transparent}
+
+/* CONFEZIONE */
 .conf-group{display:flex;gap:8px;flex-wrap:wrap}
 .conf-btn{flex:1;min-width:80px;height:44px;border:1.5px solid var(--bor);border-radius:10px;background:#fff;color:var(--mu);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .conf-btn.sel{background:var(--br);color:#fff;border-color:var(--br)}
-.conf-btn:active{transform:scale(.97)}
+
 /* CHI ORDINA */
 .chi-banner{background:var(--orp);border:1.5px solid var(--orl);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:12px}
 .chi-avatar{width:36px;height:36px;border-radius:50%;background:var(--br);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
 .chi-name{font-size:14px;font-weight:700;color:var(--br)}
 .chi-email{font-size:11px;color:var(--mu);margin-top:1px}
+
 /* ROW CARD */
 .row-card{border:1.5px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;background:var(--bg)}
 .row-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -76,9 +102,10 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .add-row-btn:active{border-color:var(--or);color:var(--br);background:var(--orp)}
 .confirm-btn{width:100%;height:50px;margin-top:14px;background:var(--br);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
 .confirm-btn:active{background:var(--brd)}
-/* ORDERS */
-.orders-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px}
-.orders-lbl{font-size:11px;font-weight:800;color:var(--br);text-transform:uppercase;letter-spacing:1px}
+
+/* PENDING ORDERS */
+.pending-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px}
+.pending-lbl{font-size:11px;font-weight:800;color:var(--br);text-transform:uppercase;letter-spacing:1px}
 .badge{background:var(--or);color:#fff;border-radius:100px;padding:3px 10px;font-size:11px;font-weight:800}
 .ord-block{background:var(--sf);border:1.5px solid var(--bor);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 5px rgba(123,59,16,.06)}
 .ord-block-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bor);background:var(--orp)}
@@ -96,25 +123,27 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .chip-conf{font-size:11px;font-weight:700;background:var(--br);color:#fff;border-radius:100px;padding:3px 10px;white-space:nowrap}
 .pricetag{font-size:11px;font-weight:800;color:var(--br);background:var(--orp);border:1px solid var(--orl);border-radius:100px;padding:3px 10px;white-space:nowrap}
 .ord-note{margin-top:6px;font-size:11px;color:var(--mu);display:flex;gap:5px;padding:6px 9px;background:var(--orp);border-radius:8px;border-left:3px solid var(--orl)}
-.status-row{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg);border-top:1px solid var(--bor);flex-wrap:wrap}
-.s-pill{font-size:10px;font-weight:700;border-radius:100px;padding:5px 11px;display:inline-flex;align-items:center;gap:4px;border:1.5px solid;cursor:pointer;font-family:inherit}
-.s-pill.sent{background:#fff;color:var(--mu);border-color:var(--bor)}
-.s-pill.sent.active{background:#fff8ec;color:#d4880f;border-color:var(--orl)}
-.s-pill.read{background:#fff;color:#aaa;border-color:#ddd}
-.s-pill.read.active{background:#eaf3de;color:#3b6d11;border-color:#97c459}
-.empty{text-align:center;padding:3rem 1rem;color:var(--hi);font-size:13px}
-.empty i{font-size:40px;display:block;margin-bottom:12px;color:var(--bor)}
-.send-section{margin-top:16px}
+
+/* SEND SECTION */
+.send-box{background:var(--sf);border:2px solid var(--or);border-radius:14px;padding:16px;margin-top:4px;box-shadow:0 2px 12px rgba(245,160,32,.15)}
+.send-box-title{font-size:12px;font-weight:800;color:var(--br);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .send-email-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
 .send-email-row .field{flex:1;min-width:180px}
-.send-btn{height:44px;padding:0 22px;background:var(--or);border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:7px;margin-top:18px;white-space:nowrap;flex-shrink:0}
-.send-btn:active{background:#d4880f}
+.send-btn{height:50px;padding:0 26px;background:var(--or);border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;margin-top:18px;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.send-btn:active{background:#d4880f;transform:scale(.98)}
 .send-btn:disabled{opacity:.6;cursor:not-allowed}
-.hint{font-size:11px;color:var(--hi);margin-top:8px;display:flex;align-items:center;gap:4px}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#2d2d2d;color:#fff;padding:12px 22px;border-radius:100px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;display:flex;align-items:center;gap:8px;pointer-events:none;max-width:90vw}
+.hint{font-size:11px;color:var(--mu);margin-top:8px;display:flex;align-items:center;gap:4px}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem 1rem;color:var(--hi);font-size:13px}
+.empty i{font-size:40px;display:block;margin-bottom:12px;color:var(--bor)}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#2d2d2d;color:#fff;padding:12px 22px;border-radius:100px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:1000;white-space:nowrap;display:flex;align-items:center;gap:8px;pointer-events:none;max-width:90vw}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.success{background:#3b6d11}
 .toast.error{background:#c0392b}
+
 /* AGENDA */
 .agenda-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap}
 .agenda-month{font-size:20px;font-weight:800;color:var(--br);text-transform:capitalize}
@@ -146,10 +175,12 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 .ag-row:last-child{border-bottom:none}
 .ag-prod{flex:1;font-weight:700;color:var(--tx);min-width:100px;font-size:13px}
 .ag-note{margin-top:6px;font-size:11px;color:var(--mu);display:flex;gap:4px;padding:5px 8px;background:var(--orp);border-radius:6px;border-left:2.5px solid var(--orl);width:100%}
+.ag-sent-bar{display:flex;align-items:center;gap:8px;padding:7px 14px;background:#eaf3de;border-top:1px solid #c8e0a8;font-size:11px;color:#3b6d11;font-weight:600}
 .empty-week{padding:16px;text-align:center;font-size:12px;color:var(--hi);background:var(--sf);border:1.5px dashed var(--bor);border-radius:12px}
-.sp-sent{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px;display:inline-flex;align-items:center;gap:3px;border:1px solid var(--orl);background:var(--orp);color:#d4880f}
-.sp-read{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px;display:inline-flex;align-items:center;gap:3px;border:1px solid #97c459;background:#eaf3de;color:#3b6d11}
-.err{border-color:#c0392b!important;box-shadow:0 0 0 3px rgba(192,57,43,.12)!important}
+.ag-letto-btn{background:none;border:1.5px solid;border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+.ag-letto-btn.off{border-color:#ddd;color:#aaa}
+.ag-letto-btn.on{border-color:#97c459;color:#3b6d11;background:#eaf3de}
+.err-border{border-color:#c0392b!important;box-shadow:0 0 0 3px rgba(192,57,43,.12)!important}
 @keyframes spin{to{transform:rotate(360deg)}}
 @supports(padding-bottom:env(safe-area-inset-bottom)){.page{padding-bottom:calc(100px + env(safe-area-inset-bottom))}}
 </style>
@@ -158,6 +189,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
 <div class="app">
 <div class="toast" id="toast"></div>
 
+<!-- HEADER -->
 <div class="hdr">
   <div class="hdr-icon">
     <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -182,11 +214,19 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
   </div>
 </div>
 
+<!-- NAV -->
 <div class="nav">
-  <button class="nav-btn active" id="tab-inserimento" onclick="switchTab('inserimento')"><i class="ti ti-clipboard-list"></i> Inserimento</button>
-  <button class="nav-btn" id="tab-agenda" onclick="switchTab('agenda')"><i class="ti ti-calendar-month"></i> Agenda mensile</button>
+  <button class="nav-btn active" id="tab-inserimento" onclick="switchTab('inserimento')">
+    <i class="ti ti-clipboard-list"></i> Inserimento
+    <span class="nav-badge" id="nav-badge-ins" style="display:none">0</span>
+  </button>
+  <button class="nav-btn" id="tab-agenda" onclick="switchTab('agenda')">
+    <i class="ti ti-calendar-month"></i> Agenda inviati
+    <span class="nav-badge" id="nav-badge-ag" style="display:none">0</span>
+  </button>
 </div>
 
+<!-- INSERIMENTO -->
 <div class="page active" id="page-inserimento">
   <div style="height:4px"></div>
 
@@ -196,7 +236,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
     <div class="g2">
       <div class="field">
         <label>Agente / collaboratore</label>
-        <select id="selAgente" onchange="onAgenteChange()">
+        <select id="selAgente" onchange="onAgenteChange()" style="appearance:auto;-webkit-appearance:auto">
           <option value="">— scegli —</option>
           <option value="Andrea">Andrea</option>
           <option value="Massimo">Massimo</option>
@@ -204,12 +244,8 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
         </select>
       </div>
       <div id="newAgenteWrap" style="display:none">
-        <div class="field"><label>Nome</label>
-          <input type="text" id="newAgenteName" placeholder="Nome e cognome"/>
-        </div>
-        <div class="field" style="margin-top:8px"><label>Email agente</label>
-          <input type="email" id="newAgenteEmail" placeholder="nome@venetafiocchi.it"/>
-        </div>
+        <div class="field"><label>Nome</label><input type="text" id="newAgenteName" placeholder="Nome e cognome"/></div>
+        <div class="field" style="margin-top:8px"><label>Email</label><input type="email" id="newAgenteEmail" placeholder="nome@venetafiocchi.it"/></div>
         <div style="display:flex;gap:8px;margin-top:8px">
           <button class="mini-btn ok" style="flex:1;font-size:13px" onclick="addAgente()"><i class="ti ti-check"></i> Aggiungi</button>
           <button class="mini-btn" onclick="cancelAgente()"><i class="ti ti-x"></i></button>
@@ -218,40 +254,30 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
     </div>
     <div class="chi-banner" id="agenteBanner" style="display:none">
       <div class="chi-avatar" id="agenteAvatar"></div>
-      <div>
-        <div class="chi-name" id="agenteName"></div>
-        <div class="chi-email" id="agenteEmailDisplay"></div>
-      </div>
+      <div><div class="chi-name" id="agenteName"></div><div class="chi-email" id="agenteEmailDisplay"></div></div>
     </div>
   </div>
 
   <!-- CLIENTE -->
   <div class="card">
     <div class="step-hdr"><div class="step-dot">1</div><div class="step-lbl">Seleziona cliente</div></div>
-    <div class="g2">
-      <div class="field">
-        <label>Cliente</label>
-        <select id="selCliente" onchange="onClienteChange()">
-          <option value="">— scegli —</option>
-          <option>AVM</option><option>AZ. AGRICOLA BONATO GIORGIO</option>
-          <option>AZ.AGR. BULGARINI FRANCO</option><option>AZIENDA AGRICOLA BARCON</option>
-          <option>AZIENDA AGRICOLA CONSOLI</option><option>AZIENDA AGRICOLA MILANESI</option>
-          <option>AZIENDA AGRICOLA RIGON</option><option>BERTOCCHI</option>
-          <option>DEPETRIS VALTER</option><option>FELTRACCO LUCIANO</option>
-          <option>LA RISORSA</option><option>MARCHESAN DAVIDE</option>
-          <option>MARCON MAURIZIO</option><option>MARCON MIRKO</option>
-          <option>NEGRISOLI</option><option>NUTRISERVICE</option>
-          <option>TECNOZOO</option><option>ZANETTI ALFREDO</option>
-          <option value="__new__">+ Nuovo cliente...</option>
-        </select>
-      </div>
-      <div id="newClienteWrap" style="display:none">
-        <div class="field"><label>Nuovo cliente</label></div>
-        <div class="inline-add">
-          <input type="text" id="newClienteInput" placeholder="Ragione sociale"/>
-          <button class="mini-btn ok" onclick="addCliente()"><i class="ti ti-check"></i></button>
-          <button class="mini-btn" onclick="cancelCliente()"><i class="ti ti-x"></i></button>
+    <div class="field">
+      <label>Cliente</label>
+      <div class="sd-wrap" id="sd-cliente">
+        <div class="sd-input-row">
+          <input class="sd-input" id="sd-cliente-input" readonly placeholder="— cerca o scegli cliente —" onclick="sdOpen('cliente')"/>
+          <button class="sd-clear" onclick="sdClear('cliente')"><i class="ti ti-x"></i></button>
+          <i class="ti ti-chevron-down sd-arrow"></i>
         </div>
+        <div class="sd-dropdown" id="sd-cliente-drop"></div>
+      </div>
+    </div>
+    <div id="newClienteWrap" style="display:none;margin-top:10px">
+      <div class="field"><label>Ragione sociale nuovo cliente</label></div>
+      <div class="inline-add">
+        <input type="text" id="newClienteInput" placeholder="Ragione sociale"/>
+        <button class="mini-btn ok" onclick="addCliente()"><i class="ti ti-check"></i></button>
+        <button class="mini-btn" onclick="cancelCliente()"><i class="ti ti-x"></i></button>
       </div>
     </div>
   </div>
@@ -264,27 +290,36 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
     <button class="confirm-btn" onclick="confirmOrder()"><i class="ti ti-check" style="font-size:18px"></i> Conferma ordine</button>
   </div>
 
-  <div class="orders-hdr">
-    <span class="orders-lbl">Ordini confermati</span>
-    <span class="badge" id="ordBadge">0</span>
-  </div>
-  <div id="ordersOut"><div class="empty"><i class="ti ti-inbox"></i>Nessun ordine inserito</div></div>
+  <!-- ORDINI IN ATTESA -->
+  <div id="pendingSection" style="display:none">
+    <div class="pending-hdr">
+      <span class="pending-lbl">📋 Da inviare</span>
+      <span class="badge" id="pendingBadge">0</span>
+    </div>
+    <div id="pendingOut"></div>
 
-  <div class="card send-section" id="sendCard" style="display:none">
-    <div class="step-hdr">
-      <div class="step-dot"><i class="ti ti-send" style="font-size:12px"></i></div>
-      <div class="step-lbl">Invia all'ufficio ordini</div>
-    </div>
-    <div class="send-email-row">
-      <div class="field">
-        <label>Email ufficio (destinatario fisso)</label>
-        <input type="email" id="emailDest" value="info@venetafiocchi.it" readonly style="background:var(--bg);color:var(--mu)"/>
+    <!-- SEND BOX -->
+    <div class="send-box">
+      <div class="send-box-title">
+        <i class="ti ti-send" style="font-size:16px;color:var(--or)"></i>
+        Invia tutti gli ordini in attesa
       </div>
-      <button class="send-btn" id="sendBtn" onclick="sendAll()">
-        <i class="ti ti-send" style="font-size:16px"></i> Invia ora
-      </button>
+      <div class="send-email-row">
+        <div class="field">
+          <label>Email ufficio</label>
+          <input type="email" id="emailDest" value="info@venetafiocchi.it" readonly style="background:var(--bg);color:var(--mu)"/>
+        </div>
+        <button class="send-btn" id="sendBtn" onclick="sendAll()">
+          <i class="ti ti-send" style="font-size:18px"></i> Invia ora
+        </button>
+      </div>
+      <p class="hint" id="sendHint"><i class="ti ti-mail" style="font-size:13px"></i> Mail a <strong>info@venetafiocchi.it</strong> + agente in CC · da <strong>ordini@venetafiocchi.it</strong></p>
     </div>
-    <p class="hint" id="sendHint"><i class="ti ti-mail" style="font-size:13px"></i> Mail inviata a <strong>info@venetafiocchi.it</strong> e all'agente in CC · mittente: <strong>ordini@venetafiocchi.it</strong></p>
+  </div>
+
+  <div id="emptyPending" class="empty" style="padding:2rem 1rem">
+    <i class="ti ti-inbox"></i>
+    Nessun ordine in attesa di invio
   </div>
 </div>
 
@@ -314,167 +349,188 @@ const OFFICE_EMAIL='info@venetafiocchi.it';
 
 const PRODUCTS=['BOVIMIX 109 UNIFEED','BOVIMIX 111','BOVIMIX 112','FIBRA FLAKES 311 P','FIBRA FLAKES 314 P','FIBRA FLAKES 314 P FINISH','FIBRA FLAKES 314 PP','FIBRA FLAKES 314 PP FINISH','FIBRA FLAKES 315 PP','FIBRA FLAKES STARTER','FIOCCO DI LUPINO AUSTRALIANO','FP-NUCLEOVIT 28 CO','KÄLBERMÜSLI','MULTIPARTICLE STARTER','MULTIPARTICLE STARTER 20','NUCLEOFLAKES 27','NUCLEOVIT 50','VITELLI START 170'];
 let products=[...PRODUCTS];
+let clients=['AVM','AZ. AGRICOLA BONATO GIORGIO','AZ.AGR. BULGARINI FRANCO','AZIENDA AGRICOLA BARCON','AZIENDA AGRICOLA CONSOLI','AZIENDA AGRICOLA MILANESI','AZIENDA AGRICOLA RIGON','BERTOCCHI','DEPETRIS VALTER','FELTRACCO LUCIANO','LA RISORSA','MARCHESAN DAVIDE','MARCON MAURIZIO','MARCON MIRKO','NEGRISOLI','NUTRISERVICE','TECNOZOO','ZANETTI ALFREDO'];
+let agenti=[{nome:'Andrea',email:'andrea.fantini@venetafiocchi.it'},{nome:'Massimo',email:'massimo@venetafiocchi.it'}];
 
-// Agenti con email
-let agenti=[
-  {nome:'Andrea', email:'andrea.fantini@venetafiocchi.it'},
-  {nome:'Massimo', email:'massimo@venetafiocchi.it'}
-];
+// TWO SEPARATE ARRAYS
+let pendingOrders = [];  // ordini confermati ma NON ancora inviati
+let sentOrders    = [];  // ordini già inviati (vanno in agenda)
 
-let lastPrices={}, rows=[], orders=[], rowId=0;
-let currentAgente=null; // {nome, email}
+let lastPrices={},rows=[],rowId=0,currentAgente=null;
+let sdProdVals={};
 
-const CONF_OPTS=[
-  {val:'Sacco', icon:'ti-package'},
-  {val:'Big Bag', icon:'ti-box'},
-  {val:'Rinfusa', icon:'ti-grain'}
-];
+const CONF_OPTS=[{val:'Sacco',icon:'ti-package'},{val:'Big Bag',icon:'ti-box'},{val:'Rinfusa',icon:'ti-grain'}];
 const DAYS=['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
 const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 let agendaDate=new Date();
+let currentOpenSd=null;
 
+/* UTILS */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fd(d){if(!d)return'—';const[y,m,g]=d.split('-');return`${g}/${m}/${y}`;}
 function isoDate(d){return d.toISOString().slice(0,10);}
 function initials(n){return n.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function circ(s){return`<svg width="${s}" height="${s}" viewBox="0 0 100 100" style="border-radius:50%;flex-shrink:0;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="#7B3B10"/><path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/><path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/><path d="M50,50 L50,90 A40,40 0 0,1 10,50 Z" fill="#F5A020" opacity=".7"/><path d="M50,50 L10,50 A40,40 0 0,1 50,10 Z" fill="#FAC85A" opacity=".5"/><line x1="50" y1="10" x2="50" y2="90" stroke="#7B3B10" stroke-width="3"/><line x1="10" y1="50" x2="90" y2="50" stroke="#7B3B10" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#7B3B10"/></svg>`;}
-
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.className='toast '+type;t.innerHTML=(type==='success'?'<i class="ti ti-circle-check"></i>':'<i class="ti ti-circle-x"></i>')+' '+msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+function markErrEl(el){if(!el)return;el.classList.add('err-border');setTimeout(()=>el.classList.remove('err-border'),1600);}
 function switchTab(t){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+t).classList.add('active');document.getElementById('tab-'+t).classList.add('active');if(t==='agenda')renderAgenda();}
-function markErr(id){const e=document.getElementById(id);if(!e)return;e.classList.add('err');setTimeout(()=>e.classList.remove('err'),1600);}
 
-/* ── AGENTE ── */
+/* NAV BADGES */
+function updateNavBadges(){
+  const bi=document.getElementById('nav-badge-ins');
+  const ba=document.getElementById('nav-badge-ag');
+  if(pendingOrders.length){bi.style.display='';bi.textContent=pendingOrders.length;}else bi.style.display='none';
+  if(sentOrders.length){ba.style.display='';ba.textContent=sentOrders.length;}else ba.style.display='none';
+}
+
+/* SEARCHABLE DROPDOWN */
+function sdOpen(fullId,rowId){
+  if(currentOpenSd&&currentOpenSd!==fullId)sdClose(currentOpenSd);
+  currentOpenSd=fullId;
+  const wrap=document.getElementById('sd-'+fullId);if(!wrap)return;
+  wrap.classList.add('open');
+  const drop=document.getElementById('sd-'+fullId+'-drop');
+  const items=fullId==='cliente'?clients:products;
+  const curVal=fullId==='cliente'?(document.getElementById('sd-cliente-input').value||''):(sdProdVals[rowId]||'');
+  const addLabel=fullId==='cliente'?'+ Nuovo cliente...':'+ Nuovo prodotto...';
+  drop.innerHTML=`<div class="sd-search-box"><i class="ti ti-search sd-search-icon"></i><input class="sd-search" id="sd-${fullId}-search" placeholder="Cerca..." oninput="sdFilter('${fullId}',${rowId!==undefined?rowId:'undefined'})"/></div><div class="sd-list" id="sd-${fullId}-list"></div>`;
+  sdRenderList(fullId,rowId,'',curVal,items,addLabel);
+  let bd=document.getElementById('sd-backdrop');
+  if(!bd){bd=document.createElement('div');bd.className='sd-backdrop';bd.id='sd-backdrop';bd.onclick=()=>sdClose(currentOpenSd);document.body.appendChild(bd);}
+  setTimeout(()=>{const s=document.getElementById('sd-'+fullId+'-search');if(s)s.focus();},60);
+}
+function sdRenderList(fullId,rowId,query,curVal,items,addLabel){
+  const list=document.getElementById('sd-'+fullId+'-list');if(!list)return;
+  const q=query.toLowerCase().trim();
+  const filtered=q?items.filter(i=>i.toLowerCase().includes(q)):items;
+  let html='';
+  if(!filtered.length&&q){html=`<div class="sd-empty">Nessun risultato per "${esc(q)}"</div>`;}
+  else{html=filtered.map(item=>`<div class="sd-item${item===curVal?' selected':''}" onclick="sdSelect('${fullId}',${rowId!==undefined?rowId:'undefined'},'${item.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">
+    ${item===curVal?'<i class="ti ti-check" style="font-size:14px;color:var(--or)"></i>':'<span style="width:22px;display:inline-block"></span>'}${esc(item)}</div>`).join('');}
+  html+=`<div class="sd-item add-new" onclick="sdAddNew('${fullId}',${rowId!==undefined?rowId:'undefined'})"><i class="ti ti-plus"></i>${addLabel}</div>`;
+  list.innerHTML=html;
+}
+function sdFilter(fullId,rowId){const inp=document.getElementById('sd-'+fullId+'-search');const q=inp?inp.value:'';const items=fullId==='cliente'?clients:products;const curVal=fullId==='cliente'?(document.getElementById('sd-cliente-input').value||''):(sdProdVals[rowId]||'');const addLabel=fullId==='cliente'?'+ Nuovo cliente...':'+ Nuovo prodotto...';sdRenderList(fullId,rowId,q,curVal,items,addLabel);}
+function sdSelect(fullId,rowId,val){
+  sdClose(fullId);
+  if(fullId==='cliente'){
+    const inp=document.getElementById('sd-cliente-input');inp.value=val;inp.classList.add('has-val');
+    document.getElementById('sd-cliente').classList.add('has-val');
+    document.getElementById('newClienteWrap').style.display='none';
+  } else {
+    sdProdVals[rowId]=val;
+    const inp=document.getElementById('sd-prod-'+rowId+'-input');
+    if(inp){inp.value=val;inp.classList.add('has-val');}
+    const wrap=document.getElementById('sd-prod-'+rowId);if(wrap)wrap.classList.add('has-val');
+    const r=rows.find(r=>r.id===rowId);if(r){r.prod=val;if(r.useLastPrice)applyLast(rowId);}
+    const nw=document.getElementById('new-prod-wrap-'+rowId);if(nw)nw.style.display='none';
+  }
+}
+function sdClear(fullId,rowId){
+  if(fullId==='cliente'){const inp=document.getElementById('sd-cliente-input');inp.value='';inp.classList.remove('has-val');document.getElementById('sd-cliente').classList.remove('has-val');}
+  else{sdProdVals[rowId]='';const inp=document.getElementById('sd-prod-'+rowId+'-input');if(inp){inp.value='';inp.classList.remove('has-val');}const wrap=document.getElementById('sd-prod-'+rowId);if(wrap)wrap.classList.remove('has-val');const r=rows.find(r=>r.id===rowId);if(r)r.prod='';}
+}
+function sdClose(fullId){if(!fullId)return;const wrap=document.getElementById('sd-'+fullId);if(wrap)wrap.classList.remove('open');const bd=document.getElementById('sd-backdrop');if(bd)bd.remove();currentOpenSd=null;}
+function sdAddNew(fullId,rowId){sdClose(fullId);if(fullId==='cliente'){document.getElementById('newClienteWrap').style.display='block';setTimeout(()=>document.getElementById('newClienteInput').focus(),60);}else{const nw=document.getElementById('new-prod-wrap-'+rowId);if(nw){nw.style.display='block';setTimeout(()=>document.getElementById('new-prod-input-'+rowId).focus(),60);}}}
+
+/* AGENTE */
 function onAgenteChange(){
   const v=document.getElementById('selAgente').value;
   document.getElementById('newAgenteWrap').style.display=v==='__new__'?'block':'none';
   if(v==='__new__'){currentAgente=null;document.getElementById('agenteBanner').style.display='none';setTimeout(()=>document.getElementById('newAgenteName').focus(),60);}
-  else if(v){
-    currentAgente=agenti.find(a=>a.nome===v)||{nome:v,email:''};
-    updateBanner();
-  } else {currentAgente=null;document.getElementById('agenteBanner').style.display='none';}
+  else if(v){currentAgente=agenti.find(a=>a.nome===v)||{nome:v,email:''};updateBanner();}
+  else{currentAgente=null;document.getElementById('agenteBanner').style.display='none';}
 }
-function addAgente(){
-  const nome=document.getElementById('newAgenteName').value.trim();
-  const email=document.getElementById('newAgenteEmail').value.trim();
-  if(!nome)return;
-  const ag={nome,email};
-  if(!agenti.find(a=>a.nome===nome)) agenti.push(ag);
-  const sel=document.getElementById('selAgente'),opt=document.createElement('option');
-  opt.value=nome;opt.textContent=nome;
-  sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));
-  sel.value=nome;
-  document.getElementById('newAgenteName').value='';
-  document.getElementById('newAgenteEmail').value='';
-  document.getElementById('newAgenteWrap').style.display='none';
-  currentAgente=ag;updateBanner();
-}
+function addAgente(){const nome=document.getElementById('newAgenteName').value.trim();const email=document.getElementById('newAgenteEmail').value.trim();if(!nome)return;const ag={nome,email};if(!agenti.find(a=>a.nome===nome))agenti.push(ag);const sel=document.getElementById('selAgente'),opt=document.createElement('option');opt.value=nome;opt.textContent=nome;sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));sel.value=nome;document.getElementById('newAgenteName').value='';document.getElementById('newAgenteEmail').value='';document.getElementById('newAgenteWrap').style.display='none';currentAgente=ag;updateBanner();}
 function cancelAgente(){document.getElementById('newAgenteWrap').style.display='none';document.getElementById('selAgente').value='';currentAgente=null;document.getElementById('agenteBanner').style.display='none';}
-function updateBanner(){
-  const b=document.getElementById('agenteBanner');
-  if(!currentAgente){b.style.display='none';return;}
-  b.style.display='flex';
-  document.getElementById('agenteAvatar').textContent=initials(currentAgente.nome);
-  document.getElementById('agenteName').textContent=currentAgente.nome;
-  document.getElementById('agenteEmailDisplay').textContent=currentAgente.email||'(nessuna email impostata)';
-  // aggiorna hint
-  const hint=document.getElementById('sendHint');
-  const cc=currentAgente.email?' + '+currentAgente.email+' (CC)':'';
-  hint.innerHTML=`<i class="ti ti-mail" style="font-size:13px"></i> Mail a <strong>${OFFICE_EMAIL}</strong>${cc} · mittente: <strong>ordini@venetafiocchi.it</strong>`;
-}
+function updateBanner(){const b=document.getElementById('agenteBanner');if(!currentAgente){b.style.display='none';return;}b.style.display='flex';document.getElementById('agenteAvatar').textContent=initials(currentAgente.nome);document.getElementById('agenteName').textContent=currentAgente.nome;document.getElementById('agenteEmailDisplay').textContent=currentAgente.email||'nessuna email impostata';const cc=currentAgente.email?' + '+currentAgente.email+' (CC)':'';document.getElementById('sendHint').innerHTML=`<i class="ti ti-mail" style="font-size:13px"></i> Mail a <strong>${OFFICE_EMAIL}</strong>${cc} · da <strong>ordini@venetafiocchi.it</strong>`;}
 
-/* ── PRODOTTI ── */
-function prodOpts(sel){return'<option value="">— scegli prodotto —</option>'+products.map(p=>`<option${p===sel?' selected':''}>${p}</option>`).join('')+'<option value="__new__">+ Nuovo prodotto...</option>';}
+/* CLIENTI */
+function addCliente(){const inp=document.getElementById('newClienteInput'),n=inp.value.trim();if(!n)return;if(!clients.includes(n))clients.push(n);sdSelect('cliente',undefined,n);inp.value='';document.getElementById('newClienteWrap').style.display='none';}
+function cancelCliente(){document.getElementById('newClienteWrap').style.display='none';}
 
-/* ── CONFEZIONE ── */
-function confHtml(rowId, selVal){
-  return CONF_OPTS.map(c=>`<button type="button" class="conf-btn${c.val===selVal?' sel':''}" onclick="setConf(${rowId},'${c.val}')">
-    <i class="ti ${c.icon}" style="font-size:14px"></i> ${c.val}
-  </button>`).join('');
-}
-function setConf(id,val){
-  const r=rows.find(r=>r.id===id);if(!r)return;
-  r.conf=val;
-  // aggiorna solo i bottoni senza re-render tutto
-  const rc=document.getElementById('rc-'+id);
-  if(rc) rc.querySelectorAll('.conf-btn').forEach(b=>{b.classList.toggle('sel',b.textContent.trim()===val);});
-}
+/* CONFEZIONE */
+function confHtml(rowId,selVal){return CONF_OPTS.map(c=>`<button type="button" class="conf-btn${c.val===selVal?' sel':''}" onclick="setConf(${rowId},'${c.val}')"><i class="ti ${c.icon}" style="font-size:14px"></i> ${c.val}</button>`).join('');}
+function setConf(id,val){const r=rows.find(r=>r.id===id);if(!r)return;r.conf=val;const rc=document.getElementById('rc-'+id);if(rc)rc.querySelectorAll('.conf-btn').forEach(b=>{b.classList.toggle('sel',b.textContent.trim()===val);});}
 
-/* ── RIGHE ── */
-function addRow(){rows.push({id:++rowId,prod:'',qty:'',dest:'',conf:'Sacco',price:'',note:'',useLastPrice:false,newOpen:false});renderRows();}
+/* RIGHE */
+function addRow(){rows.push({id:++rowId,prod:'',qty:'',dest:'',conf:'Sacco',price:'',note:'',useLastPrice:false});sdProdVals[rowId]='';renderRows();}
 function renderRows(){
   document.getElementById('rowsList').innerHTML=rows.map((r,i)=>`
     <div class="row-card" id="rc-${r.id}">
       <div class="row-head"><div class="row-num">${i+1}</div><span style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px">Riga prodotto</span></div>
       ${rows.length>1?`<button class="del-row" onclick="delRow(${r.id})"><i class="ti ti-x"></i></button>`:''}
-
-      <div class="g2" style="margin-bottom:12px">
-        <div class="field"><label>Prodotto</label><select id="sp-${r.id}" onchange="onProdChange(${r.id})">${prodOpts(r.prod)}</select></div>
-        <div style="display:${r.newOpen?'block':'none'}">
-          <div class="field"><label>Nuovo prodotto</label></div>
-          <div class="inline-add"><input type="text" id="np-${r.id}" placeholder="Nome prodotto"/>
-          <button class="mini-btn ok" onclick="saveProd(${r.id})"><i class="ti ti-check"></i></button>
-          <button class="mini-btn" onclick="cancelProd(${r.id})"><i class="ti ti-x"></i></button></div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Prodotto</label>
+        <div class="sd-wrap${r.prod?' has-val':''}" id="sd-prod-${r.id}">
+          <div class="sd-input-row">
+            <input class="sd-input${r.prod?' has-val':''}" id="sd-prod-${r.id}-input" readonly placeholder="— cerca o scegli prodotto —" value="${esc(r.prod)}" onclick="sdOpen('prod-${r.id}',${r.id})"/>
+            <button class="sd-clear" onclick="sdClear('prod-${r.id}',${r.id})"><i class="ti ti-x"></i></button>
+            <i class="ti ti-chevron-down sd-arrow"></i>
+          </div>
+          <div class="sd-dropdown" id="sd-prod-${r.id}-drop"></div>
+        </div>
+        <div id="new-prod-wrap-${r.id}" style="display:none;margin-top:8px">
+          <div class="inline-add">
+            <input type="text" id="new-prod-input-${r.id}" placeholder="Nome nuovo prodotto"/>
+            <button class="mini-btn ok" onclick="saveNewProd(${r.id})"><i class="ti ti-check"></i></button>
+            <button class="mini-btn" onclick="cancelNewProd(${r.id})"><i class="ti ti-x"></i></button>
+          </div>
         </div>
       </div>
-
-      <div class="field" style="margin-bottom:12px">
-        <label><i class="ti ti-package" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>Confezione</label>
-        <div class="conf-group">${confHtml(r.id, r.conf)}</div>
-      </div>
-
+      <div class="field" style="margin-bottom:12px"><label><i class="ti ti-package" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>Confezione</label><div class="conf-group">${confHtml(r.id,r.conf)}</div></div>
       <div class="field" style="margin-bottom:10px"><label>Destinazione</label><input type="text" id="dest-${r.id}" placeholder="Magazzino / sede" value="${esc(r.dest)}" oninput="upd(${r.id},'dest',this.value)"/></div>
-
       <div class="g2m" style="margin-bottom:10px">
         <div class="field"><label>Quantità (kg)</label><input type="number" id="qty-${r.id}" placeholder="0" min="0" step="0.1" value="${r.qty}" inputmode="decimal" oninput="upd(${r.id},'qty',this.value)"/></div>
         <div class="field"><label>Data consegna</label><input type="date" id="data-${r.id}" value="${r.date||''}" oninput="upd(${r.id},'date',this.value)"/></div>
       </div>
-
       <div class="price-wrap" style="margin-bottom:10px">
         <div class="field"><label>Prezzo €/kg</label><input type="number" id="price-${r.id}" placeholder="0.000" min="0" step="0.001" inputmode="decimal" value="${r.price}" ${r.useLastPrice?'disabled':''} oninput="upd(${r.id},'price',this.value)"/></div>
         <button class="last-btn${r.useLastPrice?' on':''}" onclick="toggleLast(${r.id})"><i class="ti ti-history" style="font-size:14px"></i> Ult.</button>
       </div>
-
       <div class="field"><label><i class="ti ti-notes" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>Note</label>
         <textarea id="note-${r.id}" placeholder="Istruzioni particolari, specifiche di consegna…" oninput="upd(${r.id},'note',this.value)">${esc(r.note)}</textarea>
       </div>
     </div>`).join('');
 }
 function upd(id,k,v){const r=rows.find(r=>r.id===id);if(r)r[k]=v;}
-function delRow(id){rows=rows.filter(r=>r.id!==id);renderRows();}
-function onProdChange(id){const sel=document.getElementById('sp-'+id),r=rows.find(r=>r.id===id);if(sel.value==='__new__'){r.newOpen=true;r.prod='';renderRows();setTimeout(()=>{const i=document.getElementById('np-'+id);if(i)i.focus();},60);}else{r.prod=sel.value;r.newOpen=false;if(r.useLastPrice)applyLast(id);renderRows();}}
-function saveProd(id){const inp=document.getElementById('np-'+id),n=(inp?inp.value:'').trim();if(!n)return;if(!products.includes(n))products.push(n);const r=rows.find(r=>r.id===id);r.prod=n;r.newOpen=false;renderRows();}
-function cancelProd(id){const r=rows.find(r=>r.id===id);r.newOpen=false;renderRows();}
+function delRow(id){rows=rows.filter(r=>r.id!==id);delete sdProdVals[id];renderRows();}
+function saveNewProd(rowId){const inp=document.getElementById('new-prod-input-'+rowId),n=(inp?inp.value:'').trim();if(!n)return;if(!products.includes(n))products.push(n);sdSelect('prod-'+rowId,rowId,n);if(inp)inp.value='';const nw=document.getElementById('new-prod-wrap-'+rowId);if(nw)nw.style.display='none';}
+function cancelNewProd(rowId){const nw=document.getElementById('new-prod-wrap-'+rowId);if(nw)nw.style.display='none';}
 function applyLast(id){const r=rows.find(r=>r.id===id);if(!r)return;const lp=lastPrices[r.prod];r.price=lp!==undefined?lp:'';const inp=document.getElementById('price-'+id);if(inp)inp.value=lp!==undefined?parseFloat(lp).toFixed(3):'';}
 function toggleLast(id){const r=rows.find(r=>r.id===id);r.useLastPrice=!r.useLastPrice;if(r.useLastPrice)applyLast(id);renderRows();}
-function onClienteChange(){const sel=document.getElementById('selCliente');document.getElementById('newClienteWrap').style.display=sel.value==='__new__'?'block':'none';if(sel.value==='__new__')setTimeout(()=>document.getElementById('newClienteInput').focus(),60);}
-function addCliente(){const inp=document.getElementById('newClienteInput'),n=inp.value.trim();if(!n)return;const sel=document.getElementById('selCliente'),opt=document.createElement('option');opt.value=n;opt.textContent=n;sel.insertBefore(opt,sel.querySelector('[value="__new__"]'));sel.value=n;inp.value='';document.getElementById('newClienteWrap').style.display='none';}
-function cancelCliente(){document.getElementById('newClienteWrap').style.display='none';document.getElementById('selCliente').value='';}
 
+/* CONFIRM ORDER → va in pendingOrders */
 function confirmOrder(){
-  if(!currentAgente){markErr('selAgente');showToast('Scegli chi inserisce l\'ordine','error');return;}
-  const cl=document.getElementById('selCliente').value;
-  if(!cl||cl==='__new__'){markErr('selCliente');return;}
+  if(!currentAgente){markErrEl(document.getElementById('selAgente'));showToast('Scegli chi inserisce l\'ordine','error');return;}
+  const cl=document.getElementById('sd-cliente-input').value.trim();
+  if(!cl){markErrEl(document.getElementById('sd-cliente-input'));showToast('Scegli il cliente','error');return;}
   if(!rows.length){addRow();return;}
   let ok=true;
-  rows.forEach(r=>{if(!r.prod){markErr('sp-'+r.id);ok=false;}if(!r.qty){markErr('qty-'+r.id);ok=false;}if(!r.dest){markErr('dest-'+r.id);ok=false;}if(!r.date){markErr('data-'+r.id);ok=false;}});
+  rows.forEach(r=>{r.prod=sdProdVals[r.id]||'';if(!r.prod){markErrEl(document.getElementById('sd-prod-'+r.id+'-input'));ok=false;}if(!r.qty){markErrEl(document.getElementById('qty-'+r.id));ok=false;}if(!r.dest){markErrEl(document.getElementById('dest-'+r.id));ok=false;}if(!r.date){markErrEl(document.getElementById('data-'+r.id));ok=false;}});
   if(!ok)return;
   rows.forEach(r=>{const p=parseFloat(r.price);if(!isNaN(p)&&p>0)lastPrices[r.prod]=p;});
-  orders.push({id:Date.now(),cliente:cl,agente:currentAgente.nome,agenteEmail:currentAgente.email||'',sentAt:null,readAt:null,
+  pendingOrders.push({id:Date.now(),cliente:cl,agente:currentAgente.nome,agenteEmail:currentAgente.email||'',sentAt:null,readAt:null,
     rows:rows.map(r=>({prod:r.prod,conf:r.conf||'Sacco',qty:parseFloat(r.qty),dest:r.dest,price:parseFloat(r.price)||null,usedLast:r.useLastPrice,date:r.date,note:r.note.trim()}))});
-  rows=[];document.getElementById('selCliente').value='';document.getElementById('newClienteWrap').style.display='none';
-  addRow();renderOrders();showToast('Ordine di '+currentAgente.nome+' aggiunto!');
+  // reset form
+  rows=[];sdProdVals={};sdClear('cliente');
+  document.getElementById('newClienteWrap').style.display='none';
+  addRow();
+  renderPending();
+  updateNavBadges();
+  showToast('Ordine di '+currentAgente.nome+' aggiunto alla lista!');
 }
 
-function delOrder(id){orders=orders.filter(o=>o.id!==id);renderOrders();}
-function toggleSent(id){const o=orders.find(o=>o.id===id);if(!o)return;o.sentAt=o.sentAt?null:new Date().toISOString();if(!o.sentAt)o.readAt=null;renderOrders();}
-function toggleRead(id){const o=orders.find(o=>o.id===id);if(!o||!o.sentAt)return;o.readAt=o.readAt?null:new Date().toISOString();renderOrders();}
+function deletePending(id){pendingOrders=pendingOrders.filter(o=>o.id!==id);renderPending();updateNavBadges();}
 
-function renderOrders(){
-  document.getElementById('ordBadge').textContent=orders.length;
-  document.getElementById('sendCard').style.display=orders.length?'block':'none';
-  const out=document.getElementById('ordersOut');
-  if(!orders.length){out.innerHTML='<div class="empty"><i class="ti ti-inbox"></i>Nessun ordine inserito</div>';return;}
-  out.innerHTML=orders.map(o=>`
+function renderPending(){
+  const sec=document.getElementById('pendingSection');
+  const emp=document.getElementById('emptyPending');
+  const badge=document.getElementById('pendingBadge');
+  badge.textContent=pendingOrders.length;
+  if(!pendingOrders.length){sec.style.display='none';emp.style.display='block';return;}
+  sec.style.display='block';emp.style.display='none';
+  document.getElementById('pendingOut').innerHTML=pendingOrders.map(o=>`
     <div class="ord-block">
       <div class="ord-block-hdr">
         <div style="flex:1;min-width:0">
@@ -484,7 +540,7 @@ function renderOrders(){
             <span class="ord-agent"><i class="ti ti-user" style="font-size:9px"></i> ${esc(o.agente)}</span>
           </div>
         </div>
-        <button class="ord-del" onclick="delOrder(${o.id})"><i class="ti ti-trash" style="font-size:18px"></i></button>
+        <button class="ord-del" onclick="deletePending(${o.id})" title="Rimuovi dalla lista"><i class="ti ti-trash" style="font-size:18px"></i></button>
       </div>
       ${o.rows.map(r=>`<div class="ord-row">
         <div class="ord-row-top">
@@ -497,168 +553,73 @@ function renderOrders(){
         </div>
         ${r.note?`<div class="ord-note"><i class="ti ti-notes"></i><span>${esc(r.note)}</span></div>`:''}
       </div>`).join('')}
-      <div class="status-row">
-        <button class="s-pill sent${o.sentAt?' active':''}" onclick="toggleSent(${o.id})">
-          <i class="ti ti-send" style="font-size:11px"></i>
-          ${o.sentAt?'Inviato '+new Date(o.sentAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna inviato'}
-        </button>
-        ${o.sentAt?`<button class="s-pill read${o.readAt?' active':''}" onclick="toggleRead(${o.id})">
-          <i class="ti ti-${o.readAt?'eye-check':'eye'}" style="font-size:11px"></i>
-          ${o.readAt?'Letto '+new Date(o.readAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna letto'}
-        </button>`:''}
-      </div>
     </div>`).join('');
 }
 
-/* ── HTML EMAIL ── */
-function buildEmail(list, today){
-  const totKg=list.reduce((s,o)=>s+o.rows.reduce((a,r)=>a+r.qty,0),0);
-  const agentiList=[...new Set(list.map(o=>o.agente))].join(', ');
-
-  const ordersHtml=list.map((o,i)=>{
-    const righe=o.rows.map((r,j)=>`
-      <tr style="background:${j%2===0?'#fdfaf6':'#ffffff'}">
-        <td style="padding:11px 14px;font-size:13px;font-weight:600;color:#3D1F08;border-bottom:1px solid #E8D5B8;min-width:180px">${esc(r.prod)}</td>
-        <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #E8D5B8;white-space:nowrap">
-          <span style="background:#7B3B10;color:#fff;border-radius:100px;padding:3px 10px;font-size:12px;font-weight:700">${r.conf}</span>
-        </td>
-        <td style="padding:11px 14px;font-size:15px;font-weight:800;color:#3D1F08;border-bottom:1px solid #E8D5B8;text-align:right;white-space:nowrap;min-width:110px">
-          ${r.qty.toLocaleString('it-IT')} <span style="font-size:12px;font-weight:400;color:#9A7355">kg</span>
-        </td>
-        <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #E8D5B8;min-width:140px">${esc(r.dest)}</td>
-        <td style="padding:11px 14px;font-size:13px;text-align:center;border-bottom:1px solid #E8D5B8;white-space:nowrap">${fd(r.date)}</td>
-        <td style="padding:11px 14px;font-size:14px;text-align:right;font-weight:800;color:#7B3B10;border-bottom:1px solid #E8D5B8;white-space:nowrap">
-          ${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?'<br><span style="font-size:10px;font-weight:400;color:#9A7355">(ult. prezzo)</span>':''):'—'}
-        </td>
-        <td style="padding:11px 14px;font-size:12px;color:#9A7355;border-bottom:1px solid #E8D5B8">${r.note?esc(r.note):'—'}</td>
-      </tr>`).join('');
-    return `
-      <div style="margin-bottom:24px;border-radius:10px;overflow:hidden;border:1px solid #E8D5B8">
-        <div style="background:#7B3B10;padding:14px 18px">
-          <div style="font-size:16px;font-weight:700;color:#fff">ORDINE ${i+1} — ${esc(o.cliente)}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">
-            Agente: <strong style="color:#FAC85A">${esc(o.agente)}</strong>
-            &nbsp;·&nbsp; ${o.rows.length} riga${o.rows.length>1?'e':''} prodotto
-            &nbsp;·&nbsp; ${o.rows.reduce((s,r)=>s+r.qty,0).toLocaleString('it-IT')} kg totali
-          </div>
-        </div>
-        <div style="overflow-x:auto">
-        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;min-width:600px">
-          <thead><tr style="background:#FEF3E2">
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prodotto</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Confezione</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Quantità</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Destinazione</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Consegna</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prezzo</th>
-            <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Note</th>
-          </tr></thead>
-          <tbody>${righe}</tbody>
-        </table>
-        </div>
-      </div>`;
-  }).join('');
-
-  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f0ea;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-<div style="max-width:760px;margin:0 auto;padding:20px">
-  <div style="background:#7B3B10;border-radius:12px 12px 0 0;padding:20px 26px;display:flex;align-items:center;gap:16px">
-    <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="50" r="48" fill="#5C2A08"/>
-      <path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/>
-      <path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/>
-      <path d="M50,50 L50,90 A40,40 0 0,1 10,50 Z" fill="#F5A020" opacity=".7"/>
-      <path d="M50,50 L10,50 A40,40 0 0,1 50,10 Z" fill="#FAC85A" opacity=".5"/>
-      <line x1="50" y1="10" x2="50" y2="90" stroke="#5C2A08" stroke-width="3"/>
-      <line x1="10" y1="50" x2="90" y2="50" stroke="#5C2A08" stroke-width="3"/>
-      <circle cx="50" cy="50" r="5" fill="#5C2A08"/><circle cx="50" cy="50" r="3" fill="#F5A020"/>
-      <circle cx="50" cy="50" r="48" fill="none" stroke="#F5A020" stroke-width="2"/>
-    </svg>
-    <div style="flex:1">
-      <div style="font-size:22px;font-weight:700;font-style:italic;color:#F5A020">Veneta<span style="color:#FAC85A">Fiocchi</span></div>
-      <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Nutrizione Animale</div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:14px;font-weight:700;color:#fff">Riepilogo Ordini</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">${today}</div>
-    </div>
-  </div>
-  <div style="background:#FEF3E2;border:1px solid #E8D5B8;border-top:none;padding:14px 26px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Ordini</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${list.length}</div></div>
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Righe totali</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${list.reduce((s,o)=>s+o.rows.length,0)}</div></div>
-    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Kg totali</div><div style="font-size:26px;font-weight:800;color:#7B3B10;line-height:1">${totKg.toLocaleString('it-IT')}</div></div>
-    <div style="margin-left:auto"><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Agenti</div><div style="font-size:13px;font-weight:700;color:#7B3B10">${agentiList}</div></div>
-  </div>
-  <div style="background:#fff;border:1px solid #E8D5B8;border-top:none;border-radius:0 0 12px 12px;padding:20px 16px 8px">
-    ${ordersHtml}
-  </div>
-  <div style="text-align:center;padding:16px;font-size:11px;color:#C4A882">
-    Inviato da <strong>ordini@venetafiocchi.it</strong> tramite app Veneta Fiocchi Ordini
-  </div>
-</div>
-</body></html>`;
-}
-
-/* ── SEND ── */
+/* SEND → sposta pendingOrders in sentOrders */
 async function sendAll(){
-  if(!orders.length)return;
+  if(!pendingOrders.length)return;
   const btn=document.getElementById('sendBtn');
-  btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader" style="font-size:16px;animation:spin 1s linear infinite"></i> Invio…';
-
+  btn.disabled=true;btn.innerHTML='<i class="ti ti-loader" style="font-size:18px;animation:spin 1s linear infinite"></i> Invio…';
   const today=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const agentiList=[...new Set(orders.map(o=>o.agente))].join(', ');
-  // CC: tutte le email univoche degli agenti (non vuote)
-  const ccEmails=[...new Set(orders.map(o=>o.agenteEmail).filter(e=>e))].join(',');
-
+  const agentiList=[...new Set(pendingOrders.map(o=>o.agente))].join(', ');
+  const ccEmails=[...new Set(pendingOrders.map(o=>o.agenteEmail).filter(e=>e))].join(',');
   try{
-    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-      to_email:     OFFICE_EMAIL,
-      cc_email:     ccEmails,
-      reply_to:     'ordini@venetafiocchi.it',
-      from_name:    'Ordini Veneta Fiocchi',
-      subject:      `[VF Ordini] ${new Date().toLocaleDateString('it-IT')} — ${orders.length} ordine${orders.length>1?'i':''} (${agentiList})`,
-      message_html: buildEmail(orders, today)
+    await emailjs.send(EJS_SERVICE,EJS_TEMPLATE,{
+      to_email:OFFICE_EMAIL,cc_email:ccEmails,
+      reply_to:'ordini@venetafiocchi.it',from_name:'Ordini Veneta Fiocchi',
+      subject:`[VF Ordini] ${new Date().toLocaleDateString('it-IT')} — ${pendingOrders.length} ordine${pendingOrders.length>1?'i':''} (${agentiList})`,
+      message_html:buildEmail(pendingOrders,today)
     });
+    // sposta tutti in sentOrders
     const now=new Date().toISOString();
-    orders.forEach(o=>{if(!o.sentAt)o.sentAt=now;});
-    renderOrders();
-    showToast('✓ Mail inviata!'+(ccEmails?' + CC agente':''),'success');
+    pendingOrders.forEach(o=>{o.sentAt=now;sentOrders.push(o);});
+    pendingOrders=[];
+    renderPending();
+    updateNavBadges();
+    showToast(`✓ ${sentOrders.length>1?'Ordini inviati':'Ordine inviato'} con successo!`+(ccEmails?' (CC agente)':''),'success');
   }catch(err){
-    console.error(err);
-    showToast('Errore: '+(err.text||err.message||'riprovare'),'error');
+    console.error(err);showToast('Errore: '+(err.text||err.message||'riprovare'),'error');
   }finally{
-    btn.disabled=false;
-    btn.innerHTML='<i class="ti ti-send" style="font-size:16px"></i> Invia ora';
+    btn.disabled=false;btn.innerHTML='<i class="ti ti-send" style="font-size:18px"></i> Invia ora';
   }
 }
 
-/* ── AGENDA ── */
+/* AGENDA - solo sentOrders */
+function toggleRead(id){const o=sentOrders.find(o=>o.id===id);if(!o)return;o.readAt=o.readAt?null:new Date().toISOString();renderAgenda();}
+
 function agendaMove(d){agendaDate=new Date(agendaDate.getFullYear(),agendaDate.getMonth()+d,1);renderAgenda();}
 function agendaToday(){agendaDate=new Date();renderAgenda();}
 function getWeeks(y,m){const weeks=[],last=new Date(y,m+1,0);let cur=new Date(y,m,1),dow=cur.getDay();if(dow===0)dow=7;cur.setDate(cur.getDate()-(dow-1));let n=1;while(cur<=last){const s=new Date(cur),e=new Date(cur);e.setDate(e.getDate()+6);weeks.push({n:n++,start:s,end:e});cur.setDate(cur.getDate()+7);}return weeks;}
+
 function renderAgenda(){
   const y=agendaDate.getFullYear(),m=agendaDate.getMonth();
   document.getElementById('agendaTitle').innerHTML=`${MONTHS[m]} <span>${y}</span>`;
   const ms=new Date(y,m,1),me=new Date(y,m+1,0);
-  const mo=orders.filter(o=>o.rows.some(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}));
+  // filtra sentOrders per data di consegna nel mese
+  const mo=sentOrders.filter(o=>o.rows.some(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}));
   const tKg=mo.reduce((s,o)=>s+o.rows.filter(r=>{if(!r.date)return false;const d=new Date(r.date+'T00:00:00');return d>=ms&&d<=me;}).reduce((a,r)=>a+r.qty,0),0);
-  const sent=mo.filter(o=>o.sentAt).length,read=mo.filter(o=>o.readAt).length;
-  document.getElementById('agendaSubtitle').textContent=`${mo.length} ordini · ${[...new Set(mo.map(o=>o.agente))].join(', ')||'—'}`;
+  const read=mo.filter(o=>o.readAt).length;
+  const agentiMese=[...new Set(mo.map(o=>o.agente))];
+  document.getElementById('agendaSubtitle').textContent=mo.length?`${mo.length} ordini inviati · ${agentiMese.join(', ')}`:'Nessun ordine inviato questo mese';
   document.getElementById('agendaStats').innerHTML=`
-    <div class="stat-card"><div class="stat-val">${mo.length}</div><div class="stat-lbl">Ordini</div></div>
+    <div class="stat-card"><div class="stat-val">${mo.length}</div><div class="stat-lbl">Inviati</div></div>
+    <div class="stat-card"><div class="stat-val">${mo.reduce((s,o)=>s+o.rows.length,0)}</div><div class="stat-lbl">Righe</div></div>
     <div class="stat-card"><div class="stat-val">${Math.round(tKg).toLocaleString('it-IT')}</div><div class="stat-lbl">Kg totali</div></div>
-    <div class="stat-card"><div class="stat-val" style="${sent>0?'color:#d4880f':''}">${sent}</div><div class="stat-lbl">Inviati</div></div>
     <div class="stat-card"><div class="stat-val" style="${read>0?'color:#3b6d11':''}">${read}</div><div class="stat-lbl">Letti</div></div>`;
+
+  if(!mo.length){document.getElementById('agendaBody').innerHTML='<div class="empty"><i class="ti ti-calendar"></i>Nessun ordine inviato questo mese</div>';return;}
+
   const today=isoDate(new Date()),weeks=getWeeks(y,m);
   let html='';
   weeks.forEach(w=>{
     const ws=isoDate(w.start),we=isoDate(w.end);
-    const wo=orders.map(o=>({...o,rows:o.rows.filter(r=>r.date&&r.date>=ws&&r.date<=we)})).filter(o=>o.rows.length>0);
+    const wo=sentOrders.map(o=>({...o,rows:o.rows.filter(r=>r.date&&r.date>=ws&&r.date<=we)})).filter(o=>o.rows.length>0);
     const wKg=wo.reduce((s,o)=>s+o.rows.reduce((a,r)=>a+r.qty,0),0);
     const sf=`${w.start.getDate()} ${MONTHS[w.start.getMonth()].slice(0,3).toLowerCase()}`;
     const ef=`${w.end.getDate()} ${MONTHS[w.end.getMonth()].slice(0,3).toLowerCase()}`;
     html+=`<div class="week-block"><div class="week-hdr"><div class="week-pill">Settimana ${w.n}</div><div class="week-dates">${sf} – ${ef}</div><div class="week-line"></div><div class="week-count">${wo.length>0?`${wo.length} ord · ${Math.round(wKg)} kg`:''}</div></div>`;
-    if(!wo.length){html+=`<div class="empty-week"><i class="ti ti-calendar-off" style="font-size:13px;margin-right:5px;opacity:.5"></i>Nessuna consegna prevista</div>`;}
+    if(!wo.length){html+=`<div class="empty-week"><i class="ti ti-calendar-off" style="font-size:13px;margin-right:5px;opacity:.5"></i>Nessuna consegna prevista questa settimana</div>`;}
     else{
       const byDate={};wo.forEach(o=>o.rows.forEach(r=>{if(!byDate[r.date])byDate[r.date]=[];byDate[r.date].push({o,r});}));
       Object.keys(byDate).sort().forEach(date=>{
@@ -666,17 +627,18 @@ function renderAgenda(){
         const byOrd={};byDate[date].forEach(({o,r})=>{if(!byOrd[o.id])byOrd[o.id]={o,rows:[]};byOrd[o.id].rows.push(r);});
         Object.values(byOrd).forEach(({o,rows})=>{
           const rKg=rows.reduce((s,r)=>s+r.qty,0);
-          html+=`<div class="ag-card"><div class="ag-card-hdr">
-            <div class="ag-date-badge" style="${isToday?'background:var(--or)':''}"><div class="ag-day">${dt.getDate()}</div><div class="ag-weekday">${DAYS[dt.getDay()]}</div></div>
-            <div class="ag-info">
-              <div class="ag-client-name">${esc(o.cliente)}</div>
-              <div class="ag-sub">
-                <span>${rows.length} prod · ${Math.round(rKg*10)/10} kg</span>
-                <span style="font-size:10px;font-weight:700;background:var(--br);color:#fff;border-radius:100px;padding:1px 7px"><i class="ti ti-user" style="font-size:9px"></i> ${esc(o.agente)}</span>
-                ${o.sentAt?`<span class="sp-sent"><i class="ti ti-send" style="font-size:9px"></i>Inviato</span>`:''}
-                ${o.readAt?`<span class="sp-read"><i class="ti ti-eye-check" style="font-size:9px"></i>Letto</span>`:''}
+          const sentTime=o.sentAt?new Date(o.sentAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'';
+          html+=`<div class="ag-card">
+            <div class="ag-card-hdr">
+              <div class="ag-date-badge" style="${isToday?'background:var(--or)':''}"><div class="ag-day">${dt.getDate()}</div><div class="ag-weekday">${DAYS[dt.getDay()]}</div></div>
+              <div class="ag-info">
+                <div class="ag-client-name">${esc(o.cliente)}</div>
+                <div class="ag-sub">
+                  <span>${rows.length} prod · ${Math.round(rKg*10)/10} kg</span>
+                  <span style="font-size:10px;font-weight:700;background:var(--br);color:#fff;border-radius:100px;padding:1px 7px"><i class="ti ti-user" style="font-size:9px"></i> ${esc(o.agente)}</span>
+                </div>
               </div>
-            </div></div>
+            </div>
             ${rows.map(r=>`<div class="ag-row">
               <div class="ag-prod">${esc(r.prod)}</div>
               <span class="chip-conf" style="font-size:10px;padding:2px 8px"><i class="ti ti-package" style="font-size:10px"></i>${r.conf}</span>
@@ -685,17 +647,77 @@ function renderAgenda(){
               ${r.price!=null?`<span class="pricetag">€ ${r.price.toFixed(3)}/kg</span>`:''}
               ${r.note?`<div class="ag-note"><i class="ti ti-notes"></i><span>${esc(r.note)}</span></div>`:''}
             </div>`).join('')}
+            <div class="ag-sent-bar">
+              <i class="ti ti-circle-check" style="font-size:14px"></i>
+              Inviato${sentTime?' alle '+sentTime:''} da <strong>${esc(o.agente)}</strong>
+              <button class="ag-letto-btn${o.readAt?' on':' off'}" onclick="toggleRead(${o.id})">
+                <i class="ti ti-${o.readAt?'eye-check':'eye'}" style="font-size:11px"></i>
+                ${o.readAt?'Letto '+new Date(o.readAt).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Segna letto'}
+              </button>
+            </div>
           </div>`;
         });
       });
     }
     html+='</div>';
   });
-  document.getElementById('agendaBody').innerHTML=html||'<div class="empty"><i class="ti ti-calendar"></i>Nessun ordine in questo mese</div>';
+  document.getElementById('agendaBody').innerHTML=html;
+}
+
+/* EMAIL HTML */
+function buildEmail(list,today){
+  const totKg=list.reduce((s,o)=>s+o.rows.reduce((a,r)=>a+r.qty,0),0);
+  const agentiList=[...new Set(list.map(o=>o.agente))].join(', ');
+  const ordersHtml=list.map((o,i)=>{
+    const righe=o.rows.map((r,j)=>`<tr style="background:${j%2===0?'#fdfaf6':'#fff'}">
+      <td style="padding:11px 14px;font-size:13px;font-weight:600;color:#3D1F08;border-bottom:1px solid #E8D5B8;min-width:160px">${esc(r.prod)}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid #E8D5B8;white-space:nowrap"><span style="background:#7B3B10;color:#fff;border-radius:100px;padding:3px 10px;font-size:12px;font-weight:700">${r.conf}</span></td>
+      <td style="padding:11px 14px;font-size:18px;font-weight:800;color:#3D1F08;border-bottom:1px solid #E8D5B8;text-align:right;white-space:nowrap;min-width:120px">${r.qty.toLocaleString('it-IT')} <span style="font-size:12px;font-weight:500;color:#9A7355">kg</span></td>
+      <td style="padding:11px 14px;font-size:13px;border-bottom:1px solid #E8D5B8;min-width:130px">${esc(r.dest)}</td>
+      <td style="padding:11px 14px;font-size:13px;text-align:center;border-bottom:1px solid #E8D5B8;white-space:nowrap">${fd(r.date)}</td>
+      <td style="padding:11px 14px;font-size:14px;text-align:right;font-weight:800;color:#7B3B10;border-bottom:1px solid #E8D5B8;white-space:nowrap">${r.price!=null?'€ '+r.price.toFixed(3)+'/kg'+(r.usedLast?'<br><span style="font-size:10px;font-weight:400;color:#9A7355">(ult.)</span>':''):'—'}</td>
+      <td style="padding:11px 14px;font-size:12px;color:#9A7355;border-bottom:1px solid #E8D5B8">${r.note?esc(r.note):'—'}</td>
+    </tr>`).join('');
+    return `<div style="margin-bottom:24px;border-radius:10px;overflow:hidden;border:1px solid #E8D5B8">
+      <div style="background:#7B3B10;padding:14px 18px">
+        <div style="font-size:16px;font-weight:700;color:#fff">ORDINE ${i+1} — ${esc(o.cliente)}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">Agente: <strong style="color:#FAC85A">${esc(o.agente)}</strong> &nbsp;·&nbsp; ${o.rows.length} riga${o.rows.length>1?'e':''} &nbsp;·&nbsp; ${o.rows.reduce((s,r)=>s+r.qty,0).toLocaleString('it-IT')} kg</div>
+      </div>
+      <div style="overflow-x:auto"><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;min-width:580px">
+        <thead><tr style="background:#FEF3E2">
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prodotto</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Conf.</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8;min-width:120px">Quantità</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Destinazione</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Consegna</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:right;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Prezzo</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#7B3B10;text-align:left;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #E8D5B8">Note</th>
+        </tr></thead>
+        <tbody>${righe}</tbody>
+      </table></div>
+    </div>`;
+  }).join('');
+  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f5f0ea;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+<div style="max-width:760px;margin:0 auto;padding:20px">
+  <div style="background:#7B3B10;border-radius:12px 12px 0 0;padding:20px 26px;display:flex;align-items:center;gap:16px">
+    <svg width="50" height="50" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#5C2A08"/><path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#F5A020"/><path d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" fill="#FAC85A"/><path d="M50,50 L50,90 A40,40 0 0,1 10,50 Z" fill="#F5A020" opacity=".7"/><path d="M50,50 L10,50 A40,40 0 0,1 50,10 Z" fill="#FAC85A" opacity=".5"/><line x1="50" y1="10" x2="50" y2="90" stroke="#5C2A08" stroke-width="3"/><line x1="10" y1="50" x2="90" y2="50" stroke="#5C2A08" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#5C2A08"/><circle cx="50" cy="50" r="3" fill="#F5A020"/><circle cx="50" cy="50" r="48" fill="none" stroke="#F5A020" stroke-width="2"/></svg>
+    <div style="flex:1"><div style="font-size:22px;font-weight:700;font-style:italic;color:#F5A020">Veneta<span style="color:#FAC85A">Fiocchi</span></div><div style="font-size:9px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Nutrizione Animale</div></div>
+    <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:#fff">Riepilogo Ordini</div><div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">${today}</div></div>
+  </div>
+  <div style="background:#FEF3E2;border:1px solid #E8D5B8;border-top:none;padding:14px 26px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Ordini</div><div style="font-size:28px;font-weight:800;color:#7B3B10;line-height:1">${list.length}</div></div>
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Righe</div><div style="font-size:28px;font-weight:800;color:#7B3B10;line-height:1">${list.reduce((s,o)=>s+o.rows.length,0)}</div></div>
+    <div><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px">Kg totali</div><div style="font-size:28px;font-weight:800;color:#7B3B10;line-height:1">${totKg.toLocaleString('it-IT')}</div></div>
+    <div style="margin-left:auto"><div style="font-size:10px;color:#9A7355;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Agenti</div><div style="font-size:13px;font-weight:700;color:#7B3B10">${agentiList}</div></div>
+  </div>
+  <div style="background:#fff;border:1px solid #E8D5B8;border-top:none;border-radius:0 0 12px 12px;padding:20px 16px 8px">${ordersHtml}</div>
+  <div style="text-align:center;padding:16px;font-size:11px;color:#C4A882">Inviato da <strong>ordini@venetafiocchi.it</strong> tramite app Veneta Fiocchi Ordini</div>
+</div></body></html>`;
 }
 
 document.getElementById('todayDate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 addRow();
+updateNavBadges();
 </script>
 </body>
 </html>
